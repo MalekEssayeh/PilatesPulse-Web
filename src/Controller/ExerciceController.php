@@ -30,6 +30,19 @@ class ExerciceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['Demonstration']->getData();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('upload_directory'), 
+                $fileName);
+            $exercice->setDemonstration($fileName);
+            $file = $form['Video']->getData();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('upload_directory'), 
+                $fileName);
+            $exercice->setVideo($fileName);
+            $exercice->setIdcoach(123);
             $entityManager->persist($exercice);
             $entityManager->flush();
 
@@ -68,13 +81,11 @@ class ExerciceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_exercice_delete', methods: ['POST'])]
-    public function delete(Request $request, Exercice $exercice, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/d', name: 'app_exercice_delete', methods: ['GET'])]
+    public function delete( Exercice $exercice, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$exercice->getId(), $request->request->get('_token'))) {
             $entityManager->remove($exercice);
             $entityManager->flush();
-        }
 
         return $this->redirectToRoute('app_exercice_index', [], Response::HTTP_SEE_OTHER);
     }

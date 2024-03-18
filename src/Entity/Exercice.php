@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ExerciceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,6 +14,7 @@ class Exercice
     private ?int $idexercice = null;
 
     #[ORM\Column(length: 255)]
+    
     private ?string $nomexercice = null;
 
     #[ORM\Column]
@@ -31,7 +32,7 @@ class Exercice
     #[ORM\Column(length: 255)]
     private ?string $Demonstration = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $Video = null;
 
     public function getId(): ?int
