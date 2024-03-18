@@ -8,6 +8,7 @@
 			border-radius: 10px;
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 			margin: auto auto 80px;
+			margin-top :20px;
 		}
 
 		.form-container label {
@@ -75,32 +76,34 @@
 
 </style>
 
+			<div style="margin-top:100px" class="page-title">New Exercice</div>
 
 	<div class="form-container">
+
 		{{ form_start(form, {'method': 'POST', 'attr': {'novalidate': 'novalidate', 'id': 'myForm', 'onsubmit': 'return validateInput1();'}}) }}
 		<div class="mb-3">
-			<label for="{{ form.nomExercice.vars.id }}">{{ form.nomExercice.vars.label }}</label>
-			{{ form_row(form.nomExercice) }}
+			<label  for="{{ form.nomExercice.vars.id }}" >Exercice Name</label>
+			{{ form_widget(form.nomExercice) }}
 		</div>
 		<div class="mb-3">
-			<label for="{{ form.idCoach.vars.id }}">{{ form.idCoach.vars.label }}</label>
-			{{ form_row(form.idCoach) }}
+			<label for="{{ form.idCoach.vars.id }}">Coach Name</label>
+			{{ form_widget(form.idCoach) }}
 		</div>
 		<div class="mb-3">
-			<label for="{{ form.DifficulteExercice.vars.id }}">{{ form.DifficulteExercice.vars.label }}</label>
-			{{ form_row(form.DifficulteExercice) }}
+			<label for="{{ form.DifficulteExercice.vars.id }}">Exercice Difficuly</label>
+			{{ form_widget(form.DifficulteExercice) }}
 		</div>
 		<div class="mb-3">
-			<label for="{{ form.Muscle.vars.id }}">{{ form.Muscle.vars.label }}</label>
-			{{ form_row(form.Muscle) }}
+			<label for="{{ form.Muscle.vars.id }}">Muscle worked</label>
+			{{ form_widget(form.Muscle) }}
 		</div>
 		<div class="mb-3">
-			<label for="{{ form.Demonstration.vars.id }}">{{ form.Demonstration.vars.label }}</label>
-			{{ form_row(form.Demonstration) }}
+			<label for="{{ form.Demonstration.vars.id }}">Image</label>
+			{{ form_widget(form.Demonstration) }}
 		</div>
 		<div class="mb-3">
-			<label for="{{ form.Video.vars.id }}">{{ form.Video.vars.label }}</label>
-			{{ form_row(form.Video) }}
+			<label for="{{ form.Video.vars.id }}">Video</label>
+			{{ form_widget(form.Video) }}
 		</div>
 
 

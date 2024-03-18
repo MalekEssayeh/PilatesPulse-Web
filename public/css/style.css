@@ -2914,9 +2914,9 @@ h3 {
 
 /* line 22, ../../Arafath/CL/Cl November/221. Music/HTML/scss/_footer.scss */
 .footer .footer_top .footer_widget .footer_title {
-  font-size: 22px;
+  font-size: 40px;
   font-weight: 400;
-  color: #403060;
+  color: #F0A6CAFF;
   text-transform: capitalize;
   margin-bottom: 40px;
 }
