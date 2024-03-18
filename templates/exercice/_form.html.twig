@@ -1,0 +1,110 @@
+<style>
+	{% block stylesheet %}
+
+		.form-container {
+			width: 700px;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			margin: auto auto 80px;
+		}
+
+		.form-container label {
+			margin-bottom: 5px;
+		}
+
+		.form-container .form-control {
+			width: 100%;
+			box-sizing: border-box;
+			margin-bottom: 10px;
+		}
+
+		.form-container button {
+			width: 100%;
+		}
+		.label-container {
+			display: inline-block;
+			margin-right: 20px; /* Adjust as needed for spacing */
+		}
+		.captcha {
+			margin: 15px 0;
+		}
+
+		.captcha .preview {
+			color: #555;
+			width: 100%;
+			text-align: center;
+			height: 40px;
+			line-height: 40px;
+			letter-spacing: 8px;
+			border: 1px dashed #888;
+			font-family: "monospace";
+			user-select: none;
+			/* disable selection */
+		}
+
+		.captcha .preview span {
+			display: inline-block;
+		}
+
+		.captcha .captcha-form {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 10px;
+		}
+
+		.captcha .captcha-form input {
+			width: 100%;
+			padding: 8px;
+			border: 1px solid #888;
+		}
+
+		.captcha .captcha-form .captcha-refresh {
+			width: 40px;
+			height: 41.6px;
+			border: none;
+			outline: none;
+			background: #888;
+			color: #eee;
+			cursor: pointer;
+		}
+
+	{% endblock %}
+
+</style>
+
+
+	<div class="form-container">
+		{{ form_start(form, {'method': 'POST', 'attr': {'novalidate': 'novalidate', 'id': 'myForm', 'onsubmit': 'return validateInput1();'}}) }}
+		<div class="mb-3">
+			<label for="{{ form.nomExercice.vars.id }}">{{ form.nomExercice.vars.label }}</label>
+			{{ form_row(form.nomExercice) }}
+		</div>
+		<div class="mb-3">
+			<label for="{{ form.idCoach.vars.id }}">{{ form.idCoach.vars.label }}</label>
+			{{ form_row(form.idCoach) }}
+		</div>
+		<div class="mb-3">
+			<label for="{{ form.DifficulteExercice.vars.id }}">{{ form.DifficulteExercice.vars.label }}</label>
+			{{ form_row(form.DifficulteExercice) }}
+		</div>
+		<div class="mb-3">
+			<label for="{{ form.Muscle.vars.id }}">{{ form.Muscle.vars.label }}</label>
+			{{ form_row(form.Muscle) }}
+		</div>
+		<div class="mb-3">
+			<label for="{{ form.Demonstration.vars.id }}">{{ form.Demonstration.vars.label }}</label>
+			{{ form_row(form.Demonstration) }}
+		</div>
+		<div class="mb-3">
+			<label for="{{ form.Video.vars.id }}">{{ form.Video.vars.label }}</label>
+			{{ form_row(form.Video) }}
+		</div>
+
+
+		<button type="submit" class="btn btn-info">{{ button_label|default('Save') }}</button>
+		{{ form_end(form) }}
+	</div>
+
