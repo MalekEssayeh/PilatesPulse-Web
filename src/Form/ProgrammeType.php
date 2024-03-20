@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Form;
-
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Programme;
+use App\Entity\Exercice;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ProgrammeType extends AbstractType
 {
@@ -13,11 +15,23 @@ class ProgrammeType extends AbstractType
     {
         $builder
             ->add('nomprogramme')
-            ->add('idcoachp')
             ->add('dureeprogramme')
-            ->add('evaluationprogramme')
-            ->add('difficulteprogramme')
-            ->add('Listexercice')
+            ->add('difficulteprogramme', ChoiceType::class, [
+                'choices' => [
+                    'Hard' => 'Difficile',
+                    'Medium' => 'Moyenne',
+                    'Easy' => 'Facile',
+                ],
+                'multiple' => false,
+                'expanded' => false,
+            ])
+            ->add('Listexercice', EntityType::class, [
+                'class' => Exercice::class,
+                'choice_label' => 'nomexercice',
+                'label' => "Nom de l'evenement",
+                'expanded' => true,
+                'multiple' => true,
+            ])
         ;
     }
 

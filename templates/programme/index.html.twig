@@ -21,16 +21,15 @@
         <tbody>
         {% for programme in programmes %}
             <tr>
-                <td>{{ programme.id }}</td>
+                <td>{{ programme.idprogramme }}</td>
                 <td>{{ programme.nomprogramme }}</td>
                 <td>{{ programme.idcoachp }}</td>
                 <td>{{ programme.dureeprogramme }}</td>
                 <td>{{ programme.evaluationprogramme }}</td>
                 <td>{{ programme.difficulteprogramme }}</td>
-                <td>{{ programme.Listexercice ? programme.Listexercice|join(', ') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_programme_show', {'id': programme.id}) }}">show</a>
-                    <a href="{{ path('app_programme_edit', {'id': programme.id}) }}">edit</a>
+                    <a href="{{ path('app_programme_show', {'id': programme.idprogramme}) }}">show</a>
+                    <a href="{{ path('app_programme_edit', {'id': programme.idprogramme}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

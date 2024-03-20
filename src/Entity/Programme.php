@@ -12,7 +12,7 @@ class Programme
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $idprogramme = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nomprogramme = null;
@@ -29,12 +29,11 @@ class Programme
     #[ORM\Column(length: 255)]
     private ?string $difficulteprogramme = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
     private array $Listexercice = [];
 
-    public function getId(): ?int
+    public function getidprogramme(): ?int
     {
-        return $this->id;
+        return $this->idprogramme;
     }
 
     public function getNomprogramme(): ?string

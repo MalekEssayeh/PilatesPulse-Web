@@ -30,9 +30,35 @@ class ProgrammeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $connection = $entityManager->getConnection();
+
+            $sql = "SELECT idprogramme FROM programme ORDER BY idprogramme DESC LIMIT 1";
+
+            $statement = $connection->executeQuery($sql);
+
+            $result = $statement->fetchAssociative();
+
+            $idprogramme = $result['idprogramme'];
+            $idprogramme++;
+            $programme->setEvaluationprogramme(1);
+            $programme->setIdcoachp(123);
+
+            
             $entityManager->persist($programme);
             $entityManager->flush();
+            foreach ($programme->getListexercice() as $value) {
+                $sql = '
+            INSERT INTO Listexercice (IDex,idProg)
+            VALUES (:value1, :value2)';
 
+                $params = [
+                    'value1' => $value->getId(),
+                    'value2' => $idprogramme,
+                ];
+
+                $statement = $connection->prepare($sql);
+                $statement->executeStatement($params);
+            }
             return $this->redirectToRoute('app_programme_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -71,7 +97,7 @@ class ProgrammeController extends AbstractController
     #[Route('/{id}', name: 'app_programme_delete', methods: ['POST'])]
     public function delete(Request $request, Programme $programme, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$programme->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $programme->getId(), $request->request->get('_token'))) {
             $entityManager->remove($programme);
             $entityManager->flush();
         }
