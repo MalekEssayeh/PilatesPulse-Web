@@ -29,7 +29,7 @@ class Programme
     #[ORM\Column(length: 255)]
     private ?string $difficulteprogramme = null;
 
-    private array $Listexercice = [];
+    public array $Listexercice = [];
 
     public function getidprogramme(): ?int
     {

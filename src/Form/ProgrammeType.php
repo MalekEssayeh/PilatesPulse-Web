@@ -28,7 +28,6 @@ class ProgrammeType extends AbstractType
             ->add('Listexercice', EntityType::class, [
                 'class' => Exercice::class,
                 'choice_label' => 'nomexercice',
-                'label' => "Nom de l'evenement",
                 'expanded' => true,
                 'multiple' => true,
             ])

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Exercice;
 use App\Entity\Programme;
 use App\Form\ProgrammeType;
 use App\Repository\ProgrammeRepository;
@@ -76,16 +77,55 @@ class ProgrammeController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_programme_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Programme $programme, EntityManagerInterface $entityManager): Response
-    {
+    {   
+        $connection = $entityManager->getConnection();
+
+        $sql = "SELECT * FROM listExercice WHERE idProg = :id";
+
+        $statement = $connection->executeQuery($sql, ['id' => $programme->getidprogramme()]);
+
+        $results = $statement->fetchAllAssociative();
+        
+        
+        foreach($results as $result){
+            $sql = "SELECT * FROM exercice WHERE idExercice = :id";
+        
+            $statement = $connection->executeQuery($sql, ['id' => $result['IDex']]);
+        
+            $res = $statement->fetchAssociative(); 
+                    
+            $exercice = $entityManager->getRepository(Exercice::class)->find($res['idExercice']);
+                        if ($exercice) {
+                $programme->Listexercice[] = $exercice; 
+            }
+        }
+
+
         $form = $this->createForm(ProgrammeType::class, $programme);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($results as $result) {
+                $sql = 'DELETE FROM Listexercice  WHERE IDex = :id';
+                $params = [
+                    'id' => $result['IDex'],
+                ];
+                $statement = $connection->prepare($sql);
+                $statement->executeStatement($params);
+            }
+            foreach ($programme->getListexercice() as $value) {
+                $sql = 'INSERT INTO Listexercice (IDex,idProg) VALUES (:value1, :value2)';
+                $params = [
+                    'value1' => $value->getId(),
+                    'value2' => $programme->getidprogramme(),
+                ];
+                $statement = $connection->prepare($sql);
+                $statement->executeStatement($params);
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_programme_index', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('programme/edit.html.twig', [
             'programme' => $programme,
             'form' => $form,
@@ -93,7 +133,7 @@ class ProgrammeController extends AbstractController
     }
 
     #[Route('/{id}/n', name: 'app_programme_delete')]
-    public function delete(Request $request, Programme $programme, EntityManagerInterface $entityManager): Response
+    public function delete( Programme $programme, EntityManagerInterface $entityManager): Response
     {
         $connection = $entityManager->getConnection();
 
