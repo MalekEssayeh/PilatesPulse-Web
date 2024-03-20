@@ -1,44 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Programme index{% endblock %}
+{% block title %}Exercice index
+{% endblock %}
 
 {% block body %}
-    <h1>Programme index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nomprogramme</th>
-                <th>Idcoachp</th>
-                <th>Dureeprogramme</th>
-                <th>Evaluationprogramme</th>
-                <th>Difficulteprogramme</th>
-                <th>Listexercice</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for programme in programmes %}
-            <tr>
-                <td>{{ programme.idprogramme }}</td>
-                <td>{{ programme.nomprogramme }}</td>
-                <td>{{ programme.idcoachp }}</td>
-                <td>{{ programme.dureeprogramme }}</td>
-                <td>{{ programme.evaluationprogramme }}</td>
-                <td>{{ programme.difficulteprogramme }}</td>
-                <td>
-                    <a href="{{ path('app_programme_show', {'id': programme.idprogramme}) }}">show</a>
-                    <a href="{{ path('app_programme_edit', {'id': programme.idprogramme}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<div class="container">
+		<div class="page-title">Programme Index</div>
 
-    <a href="{{ path('app_programme_new') }}">Create new</a>
+		<div class="row">
+			{% for programme in programmes %}
+				<div class="cardd">
+					<div class="card__header">
+                    						<img src="{{ asset("imgdum.jpg")}}" class="card__image" width="600">
+					</div>
+					<div class="card__body">
+						<h4>{{ programme.nomprogramme }}</h4>
+							<span class="tag tag-blue">{{ programme.difficulteprogramme }}</span>
+					</div>
+					<div class="card__footer">
+						<a href="{{ path('app_programme_show', {'id': programme.idprogramme}) }}" class="genric-btn success-border circle">More</a>
+						<a href="{{ path('app_programme_edit', {'id': programme.idprogramme}) }}" class="genric-btn info-border circle">Update</a>
+						<a href="{{ path('app_programme_delete', {'id': programme.idprogramme}) }}" class="genric-btn danger-border circle">Delete</a>
+					</div>
+
+				</div>
+			{% endfor %}
+
+		</div>
+
+		<a href="{{ path('app_exercice_new') }}">Create New</a>
+	</div>
 {% endblock %}
