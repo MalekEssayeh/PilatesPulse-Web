@@ -1,49 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Exercice{% endblock %}
-
 {% block body %}
-    <h1>Exercice</h1>
+  <h1>Exercice</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ exercice.id }}</td>
-            </tr>
-            <tr>
-                <th>NomExercice</th>
-                <td>{{ exercice.nomExercice }}</td>
-            </tr>
-            <tr>
-                <th>IdCoach</th>
-                <td>{{ exercice.idCoach }}</td>
-            </tr>
-            <tr>
-                <th>DifficulteExercice</th>
-                <td>{{ exercice.DifficulteExercice }}</td>
-            </tr>
-            <tr>
-                <th>EvaluationExercice</th>
-                <td>{{ exercice.EvaluationExercice }}</td>
-            </tr>
-            <tr>
-                <th>Muscle</th>
-                <td>{{ exercice.Muscle }}</td>
-            </tr>
-            <tr>
-                <th>Demonstration</th>
-                <td>{{ exercice.Demonstration }}</td>
-            </tr>
-            <tr>
-                <th>Video</th>
-                <td>{{ exercice.Video }}</td>
-            </tr>
-        </tbody>
-    </table>
+  <div class="grid text-center d-flex flex-row gap-1">
+    <div class="g-col-6">
+      <video autoplay muted loop width="500" height="400" src="{{ asset('uploads/' ~ exercice.Video ) }}"></video>
+    </div>
 
-    <a href="{{ path('app_exercice_index') }}">back to list</a>
-
-    <a href="{{ path('app_exercice_edit', {'id': exercice.id}) }}">edit</a>
-
+    <div class="g-col-4">
+      <p>
+        <strong>NomExercice:</strong>
+        {{ exercice.nomExercice }}</p>
+      <p>
+        <strong>DifficulteExercice:</strong>
+        {{ exercice.DifficulteExercice }}</p>
+      <p>
+        <strong>EvaluationExercice:</strong>
+        {{ exercice.EvaluationExercice }}</p>
+      <p>
+        <strong>Muscle:</strong>
+        {{ exercice.Muscle }}</p>
+    </div>
+  </div>
 {% endblock %}
+

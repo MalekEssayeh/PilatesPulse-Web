@@ -70,6 +70,18 @@ class ExerciceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+             $file = $form['Demonstration']->getData();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('upload_directory'), 
+                $fileName);
+            $exercice->setDemonstration($fileName);
+            $file = $form['Video']->getData();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('upload_directory'), 
+                $fileName);
+            $exercice->setVideo($fileName);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_exercice_index', [], Response::HTTP_SEE_OTHER);
