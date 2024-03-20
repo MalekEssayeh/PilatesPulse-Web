@@ -75,7 +75,6 @@
 
 </style>
 
-<div style="margin-top:100px" class="page-title">New Programme</div>
 
 <div class="form-container">
 
@@ -89,6 +88,8 @@
 	<div class="mb-3">
 		<label for="{{ form.dureeprogramme.vars.id }}">Programme Duration</label>
 		{{ form_widget(form.dureeprogramme) }}
+		{{ form_errors(form.dureeprogramme) }}
+
 	</div>
 	<div class="mb-3">
 		<label for="{{ form.difficulteprogramme.vars.id }}">Difficuly</label>
