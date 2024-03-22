@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Favoris;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Programme;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @extends ServiceEntityRepository<Favoris>
@@ -15,11 +17,37 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Favoris[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class FavorisRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
+{  
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Favoris::class);
+        $this->entityManager = $entityManager;
     }
+
+    public function findprog(): array
+    {
+        // Retrieve favorited program IDs
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('f.idprogramme')
+            ->from(Favoris::class, 'f')
+            ->where('f.iduser = :userId')
+            ->setParameter('userId', 123); 
+
+        $favoritedProgramIds = $queryBuilder->getQuery()->getResult();
+
+        $favoritedPrograms = [];
+        foreach ($favoritedProgramIds as $favoritedProgramId) {
+            $program = $this->entityManager->getRepository(Programme::class)->find($favoritedProgramId);
+            if ($program) {
+                $favoritedPrograms[] = $program;
+            }
+        }
+
+        return $favoritedPrograms;
+    }
+
 
 //    /**
 //     * @return Favoris[] Returns an array of Favoris objects

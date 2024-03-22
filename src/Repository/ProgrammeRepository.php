@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Repository;
-
+use App\Entity\Favoris;
 use App\Entity\Programme;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,7 +20,37 @@ class ProgrammeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Programme::class);
     }
+    public function addfavoris($idprog, $userid)
+    {
+        $entityManager = $this->getEntityManager();
 
+        $favoris = new Favoris();
+        $favoris->setIDUser($userid);
+        $favoris->setIdprogramme($idprog);
+
+        $entityManager->persist($favoris);
+        $entityManager->flush();
+    }
+
+    public function deletefavoris($idprog, $userid)
+    {
+        $entityManager = $this->getEntityManager();
+        $favoris = $entityManager->getRepository(Favoris::class)->findOneBy(['idprogramme' => $idprog, 'iduser' => $userid]);
+
+        if ($favoris) {
+            $entityManager->remove($favoris);
+            $entityManager->flush();
+        }
+    }
+    public function Recherche($idprog, $userid)
+    {
+        $entityManager = $this->getEntityManager();
+        $favoris = $entityManager->getRepository(Favoris::class)->findOneBy(['idprogramme' => $idprog, 'iduser' => $userid]);
+        if ($favoris)
+            return true;
+        else
+            return false;
+    }
 //    /**
 //     * @return Programme[] Returns an array of Programme objects
 //     */
