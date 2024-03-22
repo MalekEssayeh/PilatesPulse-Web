@@ -185,11 +185,13 @@ class ProgrammeController extends AbstractController
             return new JsonResponse(['success' => true]);
         }
     }
-    #[Route('/n/recom', name: 'recom')]
+    #[Route('/n/recom', name: 'recom',methods: ['POST'])]
     public function recom(Request $request, EntityManagerInterface $entityManager, ProgrammeRepository $programmeRepository): Response
-    {
-        $command = ['python', 'C:\xampp\htdocs\PilatePulse\src\RecomIA.py', 'Homme', '16', '180', '71'];
-
+    {   $sexe=$request->request->get('sexe');
+        $age=(string)$request->request->get('age');
+        $weight=(string)$request->request->get('weight');
+        $height=(string)$request->request->get('height');
+        $command = ['python', 'C:\xampp\htdocs\PilatePulse\src\RecomIA.py', $sexe,$age,$height,$weight];
         $process = new Process($command);
 
         $process->run();
@@ -237,6 +239,12 @@ class ProgrammeController extends AbstractController
             'programmes' =>        $programmeRepository->recommanded($programmes, $output),
             'programmeRepository' => $programmeRepository
 
+        ]);
+    }
+    #[Route('/n/recform', name: 'recform')]
+    public function recform(): Response
+    {
+        return $this->render('programme/recform.html.twig', [
         ]);
     }
 }

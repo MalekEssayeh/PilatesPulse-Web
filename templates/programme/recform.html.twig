@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recommandation Form{% endblock %}
+
+{% block body %}
+    <div style="margin-top:100px" class="page-title">Recommandation Form</div>
+
+    {% block stylesheets %}
+    <style>
+        .form-container {
+            width: 700px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto 80px;
+        }
+
+        .form-container label {
+            margin-bottom: 5px;
+        }
+
+        .form-container .form-control {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .form-container button {
+            width: 100%;
+        }
+
+        .label-container {
+            display: inline-block;
+            margin-right: 20px; /* Adjust as needed for spacing */
+        }
+    </style>
+    {% endblock %}
+
+    <div class="form-container">
+        <form method="POST" action="{{ path('recom') }}">
+            <div class="mb-3">
+                <label for="sexe">Sexe:</label><br>
+                <select class='form-control' id="sexe" name="sexe">
+                    <option value="Femme">Femme</option>
+                    <option value="Homme">Homme</option>
+                </select><br><br>
+            </div>
+            <div class="mb-3">
+                <label for="age">Age:</label><br>
+                <input class='form-control' type="number" id="age" name="age"><br><br>
+            </div>
+            <div class="mb-3">
+                <label for="weight">Weight (kg):</label><br>
+                <input class='form-control' type="number" id="weight" name="weight"><br><br>
+            </div>
+            <div class="mb-3">
+                <label for="height">Height (cm):</label><br>
+                <input class='form-control' type="number" id="height" name="height"><br><br>
+            </div>
+            <button type="submit" class="btn btn-info">Submit</button>
+        </form>
+    </div>
+{% endblock %}
