@@ -1,5 +1,78 @@
 {% extends 'base.html.twig' %}
-{% block body %}
-{{ programmes }}
 
+{% block title %}Programmes index{% endblock %}
+
+{% block body %}
+    <link rel="stylesheet" href="path/to/font-awesome/css/all.min.css">
+
+    <div class="container">
+        <div class="page-title">Recommanded Programmes</div>
+
+        <div class="row">
+            {% for programme in programmes %}
+                <div class="cardd">
+                    <div class="card__header">
+                        <i data-programme-id="{{ programme.idprogramme }}" class="fa {% if programmeRepository.Recherche(programme.idprogramme, 123) %}fa-star{% else %}fa-star-o{% endif %} fa-2x star-icon" style="position: absolute; top: 10px; right: 10px; color:#403060; font-size:50px; cursor: pointer;"></i>
+                        <img src="{{ asset("imgdum.jpg")}}" class="card__image" width="600">
+                    </div>
+                    <div class="card__body">
+                        <h4>{{ programme.nomprogramme }}</h4>
+                        <span class="tag tag-blue">{{ programme.difficulteprogramme }}</span>
+                    </div>
+                    <div class="card__footer">
+                        <a href="{{ path('app_programme_show', {'id': programme.idprogramme}) }}" class="genric-btn success-border circle">More</a>
+                        <a href="{{ path('app_programme_edit', {'id': programme.idprogramme}) }}" class="genric-btn info-border circle">Update</a>
+                        <a href="{{ path('app_programme_delete', {'id': programme.idprogramme}) }}" class="genric-btn danger-border circle">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <a href="{{ path('app_programme_new') }}">Create New</a>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const starIcons = document.querySelectorAll(".star-icon");
+
+            starIcons.forEach(function (starIcon) {
+                starIcon.addEventListener("click", function () {
+                    const programmeId = starIcon.dataset.programmeId;
+                    const isStarred = starIcon.classList.contains("fa-star");
+
+                    const formData = new FormData();
+                    formData.append("programmeId", programmeId);
+                    formData.append("isStarred", isStarred ? "true" : "false");
+
+                    fetch("{{ path('toggle_favorite') }}", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error("Network response was not ok.");
+                    }).then(data => {
+                        if (data.success) {
+                            if (isStarred) {
+                                starIcon.classList.remove("fa-star");
+                                starIcon.classList.add("fa-star-o");
+                            } else {
+                                starIcon.classList.remove("fa-star-o");
+                                starIcon.classList.add("fa-star");
+                            }
+                        } else {
+                            console.error(data.message);
+                        }
+                    }).catch(error => {
+                        console.error("There was a problem with the fetch operation:", error);
+                    });
+                });
+            });
+        });
+    </script>
 {% endblock %}
+

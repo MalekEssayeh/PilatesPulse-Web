@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Repository;
+
 use App\Entity\Favoris;
 use App\Entity\Programme;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * @extends ServiceEntityRepository<Programme>
@@ -51,7 +53,9 @@ class ProgrammeRepository extends ServiceEntityRepository
         else
             return false;
     }
-    public static function recommanded(array $programs, string $targetMuscle): array {
+    public static function recommanded(array $programs, string $targetMuscle): array
+    {$targetMuscle = preg_replace("/[\r\n]/", "", $targetMuscle);
+
         $filteredPrograms = [];
         foreach ($programs as $program) {
             foreach ($program->getListExercice() as $exercise) {
@@ -61,8 +65,8 @@ class ProgrammeRepository extends ServiceEntityRepository
                 }
             }
         }
-    
-        usort($filteredPrograms, function($a, $b) use ($targetMuscle) {
+
+        usort($filteredPrograms, function ($a, $b) use ($targetMuscle) {
             $countA = 0;
             $countB = 0;
             foreach ($a->getListExercice() as $exercise) {
@@ -77,33 +81,33 @@ class ProgrammeRepository extends ServiceEntityRepository
             }
             return $countB <=> $countA;
         });
-    
+
         // Limit the result to the specified number
         return array_slice($filteredPrograms, 0, min(3, count($filteredPrograms)));
     }
-    
-//    /**
-//     * @return Programme[] Returns an array of Programme objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Programme
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Programme[] Returns an array of Programme objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('p.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Programme
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

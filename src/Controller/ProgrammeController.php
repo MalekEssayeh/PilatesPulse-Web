@@ -186,9 +186,9 @@ class ProgrammeController extends AbstractController
         }
     }
     #[Route('/n/recom', name: 'recom')]
-    public function recom(): Response
+    public function recom(Request $request, EntityManagerInterface $entityManager, ProgrammeRepository $programmeRepository): Response
     {
-        $command = ['python', 'C:\xampp\htdocs\PilatePulse\src\RecomIA.py', 'Homme', '16', '150', '71'];
+        $command = ['python', 'C:\xampp\htdocs\PilatePulse\src\RecomIA.py', 'Homme', '16', '180', '71'];
 
         $process = new Process($command);
 
@@ -198,9 +198,45 @@ class ProgrammeController extends AbstractController
             throw new ProcessFailedException($process);
         }
         $output = $process->getOutput();
+        $programmes = [];
+
+
+        $programmeRepository = $entityManager->getRepository(Programme::class);
+        $exerciceRepository = $entityManager->getRepository(Exercice::class);
+        $connection = $entityManager->getConnection();
+
+        $programmesData = $programmeRepository->findAll();
+
+        foreach ($programmesData as $programmeData) {
+
+            $sql = "SELECT * FROM listExercice WHERE idProg = :id";
+
+            $statement = $connection->executeQuery($sql, ['id' => $programmeData->getidprogramme()]);
+
+            $results = $statement->fetchAllAssociative();
+
+
+            foreach ($results as $result) {
+                $sql = "SELECT * FROM exercice WHERE idExercice = :id";
+
+                $statement = $connection->executeQuery($sql, ['id' => $result['IDex']]);
+
+                $res = $statement->fetchAssociative();
+
+                $exercice = $entityManager->getRepository(Exercice::class)->find($res['idExercice']);
+                if ($exercice) {
+                    $programmeData->Listexercice[] = $exercice;
+                }
+            }
+
+
+            $programmes[] = $programmeData;
+        }
 
         return $this->render('programme/recommandation.html.twig', [
-            'programmes' => $output,
+            'programmes' =>        $programmeRepository->recommanded($programmes, $output),
+            'programmeRepository' => $programmeRepository
+
         ]);
     }
 }
