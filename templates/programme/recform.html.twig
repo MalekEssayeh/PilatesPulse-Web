@@ -3,62 +3,114 @@
 {% block title %}Recommandation Form{% endblock %}
 
 {% block body %}
-    <div style="margin-top:100px" class="page-title">Recommandation Form</div>
+<div style="margin-top:100px" class="page-title">Recommandation Form</div>
 
-    {% block stylesheets %}
-    <style>
-        .form-container {
-            width: 700px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 20px auto 80px;
-        }
+{% block stylesheets %}
+<style>
+    .form-container {
+        width: 700px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 20px auto 80px;
+    }
 
-        .form-container label {
-            margin-bottom: 5px;
-        }
+    .form-container label {
+        margin-bottom: 5px;
+    }
 
-        .form-container .form-control {
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
+    .form-container .form-control {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
 
-        .form-container button {
-            width: 100%;
-        }
+    .form-container button {
+        width: 100%;
+    }
 
-        .label-container {
-            display: inline-block;
-            margin-right: 20px; /* Adjust as needed for spacing */
-        }
-    </style>
-    {% endblock %}
+    .label-container {
+        display: inline-block;
+        margin-right: 20px; /* Adjust as needed for spacing */
+    }
 
-    <div class="form-container">
-        <form method="POST" action="{{ path('recom') }}">
-            <div class="mb-3">
-                <label for="sexe">Sexe:</label><br>
-                <select class='form-control' id="sexe" name="sexe">
-                    <option value="Femme">Femme</option>
-                    <option value="Homme">Homme</option>
-                </select><br><br>
-            </div>
-            <div class="mb-3">
-                <label for="age">Age:</label><br>
-                <input class='form-control' type="number" id="age" name="age"><br><br>
-            </div>
-            <div class="mb-3">
-                <label for="weight">Weight (kg):</label><br>
-                <input class='form-control' type="number" id="weight" name="weight"><br><br>
-            </div>
-            <div class="mb-3">
-                <label for="height">Height (cm):</label><br>
-                <input class='form-control' type="number" id="height" name="height"><br><br>
-            </div>
-            <button type="submit" class="btn btn-info">Submit</button>
-        </form>
-    </div>
+    .error-message {
+        color: red;
+        font-size: 12px;
+    }
+</style>
+{% endblock %}
+
+<div class="form-container">
+    <form method="POST" action="{{ path('recom') }}" id="recomForm">
+        <div class="mb-3">
+            <label for="sexe">Sexe:</label><br>
+            <select class='form-control' id="sexe" name="sexe">
+                <option value="Femme">Femme</option>
+                <option value="Homme">Homme</option>
+            </select><br><br>
+        </div>
+        <div class="mb-3">
+            <label for="age">Age:</label><br>
+            <input class='form-control' type="number" id="age" name="age"><br>
+            <span id="age-error" class="error-message"></span><br>
+        </div>
+        <div class="mb-3">
+            <label for="weight">Weight (kg):</label><br>
+            <input class='form-control' type="number" id="weight" name="weight"><br>
+            <span id="weight-error" class="error-message"></span><br>
+        </div>
+        <div class="mb-3">
+            <label for="height">Height (cm):</label><br>
+            <input class='form-control' type="number" id="height" name="height"><br>
+            <span id="height-error" class="error-message"></span><br>
+        </div>
+
+        <button type="submit" class="btn btn-info">Submit</button>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var form = document.getElementById("recomForm");
+
+            form.addEventListener("submit", function (event) {
+                var ageInput = document.getElementById("age");
+                var weightInput = document.getElementById("weight");
+                var heightInput = document.getElementById("height");
+
+                var ageError = document.getElementById("age-error");
+                var weightError = document.getElementById("weight-error");
+                var heightError = document.getElementById("height-error");
+
+                var isValid = true;
+
+                if (ageInput.value < 13 || ageInput.value > 70) {
+                    ageError.textContent = "Age must be between 13 and 70.";
+                    isValid = false;
+                } else {
+                    ageError.textContent = "";
+                }
+
+                if (weightInput.value < 35 || weightInput.value > 120) {
+                    weightError.textContent = "Weight must be between 35 and 120.";
+                    isValid = false;
+                } else {
+                    weightError.textContent = "";
+                }
+
+                if (heightInput.value < 150 || heightInput.value > 210) {
+                    heightError.textContent = "Height must be between 150 and 210.";
+                    isValid = false;
+                } else {
+                    heightError.textContent = "";
+                }
+
+                if (!isValid) {
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+        });
+    </script>
+</div>
 {% endblock %}
