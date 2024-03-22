@@ -2898,12 +2898,12 @@ h3 {
 
 
 
-  /* line 15, ../../Arafath/CL/Cl November/221. Music/HTML/scss/_footer.scss */
-  .footer .footer_top .footer_widget {
-    margin-bottom: 10px;
-    
-    text-align: center;
-  }
+/* line 15, ../../Arafath/CL/Cl November/221. Music/HTML/scss/_footer.scss */
+.footer .footer_top .footer_widget {
+  margin-bottom: 10px;
+
+  text-align: center;
+}
 
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -7512,6 +7512,7 @@ h6 {
 
 
 .cardd {
+  position: relative;
   display: flex;
   margin-right: 30px;
   margin-bottom: 10px;
@@ -7527,6 +7528,9 @@ h6 {
 }
 
 
+.card__header {
+  position: relative;
+}
 
 .card__body {
   padding: 1rem;
@@ -7536,9 +7540,10 @@ h6 {
 }
 
 .card__image {
-  max-width: 100%; 
+  max-width: 100%;
   max-height: 300px;
 }
+
 .tag {
   align-self: flex-start;
   padding: .25em .75em;
@@ -7567,31 +7572,37 @@ h6 {
   background: linear-gradient(to bottom, #ef473a, #cb2d3e);
   color: #fafafa;
 }
+
 .tag-1 {
   background: #cb2d3e;
   background: linear-gradient(to bottom, #3f5efb, #fc466b);
   color: #fafafa;
 }
+
 .tag-2 {
   background: #cb2d3e;
   background: linear-gradient(to bottom, #fd1d1d, #fcb045);
   color: #fafafa;
 }
+
 .tag-4 {
   background: #cb2d3e;
   background: linear-gradient(to bottom, #eeaeca, #94bbe9);
   color: #fafafa;
 }
+
 .tag-3 {
   background: #cb2d3e;
   background: linear-gradient(to bottom, #22c1c3, #fdbccd);
   color: #fafafa;
 }
+
 .tag-5 {
   background: #cb2d3e;
   background: linear-gradient(to bottom, #360033, #0b8793);
   color: #fafafa;
 }
+
 .card__body h4 {
   font-size: 1.5rem;
   text-transform: capitalize;
@@ -7602,9 +7613,11 @@ h6 {
   padding: 1rem;
   margin-top: auto;
 }
+
 .card__footer a {
-  margin-right: 5px; 
+  margin-right: 5px;
 }
+
 .qr-code {
   bottom: 0;
   margin-left: 110px;

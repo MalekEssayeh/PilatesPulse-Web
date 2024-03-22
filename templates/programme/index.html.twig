@@ -1,34 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Exercice index
-{% endblock %}
+{% block title %}Programmes index{% endblock %}
 
 {% block body %}
+    <link rel="stylesheet" href="path/to/font-awesome/css/all.min.css">
 
-	<div class="container">
-		<div class="page-title">Programmes Index</div>
+    <div class="container">
+        <div class="page-title">Programmes Index</div>
 
-		<div class="row">
-			{% for programme in programmes %}
-				<div class="cardd">
-					<div class="card__header">
-                    						<img src="{{ asset("imgdum.jpg")}}" class="card__image" width="600">
-					</div>
-					<div class="card__body">
-						<h4>{{ programme.nomprogramme }}</h4>
-							<span class="tag tag-blue">{{ programme.difficulteprogramme }}</span>
-					</div>
-					<div class="card__footer">
-						<a href="{{ path('app_programme_show', {'id': programme.idprogramme}) }}" class="genric-btn success-border circle">More</a>
-						<a href="{{ path('app_programme_edit', {'id': programme.idprogramme}) }}" class="genric-btn info-border circle">Update</a>
-						<a href="{{ path('app_programme_delete', {'id': programme.idprogramme}) }}" class="genric-btn danger-border circle">Delete</a>
-					</div>
+        <div class="row">
+            {% for programme in programmes %}
+                <div class="cardd">
+                    <div class="card__header">
+                        <i class="fa fa-star-o fa-2x star-icon" style="position: absolute; top: 10px; right: 10px; color:#403060; font-size:50px; cursor: pointer;"></i>
+                        <img src="{{ asset("imgdum.jpg")}}" class="card__image" width="600">
+                    </div>
+                    <div class="card__body">
+                        <h4>{{ programme.nomprogramme }}</h4>
+                        <span class="tag tag-blue">{{ programme.difficulteprogramme }}</span>
+                    </div>
+                    <div class="card__footer">
+                        <a href="{{ path('app_programme_show', {'id': programme.idprogramme}) }}" class="genric-btn success-border circle">More</a>
+                        <a href="{{ path('app_programme_edit', {'id': programme.idprogramme}) }}" class="genric-btn info-border circle">Update</a>
+                        <a href="{{ path('app_programme_delete', {'id': programme.idprogramme}) }}" class="genric-btn danger-border circle">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
-				</div>
-			{% endfor %}
+        <a href="{{ path('app_programme_new') }}">Create New</a>
+    </div>
 
-		</div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const starIcons = document.querySelectorAll(".star-icon");
 
-		<a href="{{ path('app_programme_new') }}">Create New</a>
-	</div>
+            starIcons.forEach(function (starIcon) {
+                starIcon.addEventListener("click", function () {
+                    if (starIcon.classList.contains("fa-star-o")) {
+                        starIcon.classList.remove("fa-star-o");
+                        starIcon.classList.add("fa-star");
+                    } else {
+                        starIcon.classList.remove("fa-star");
+                        starIcon.classList.add("fa-star-o");
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
