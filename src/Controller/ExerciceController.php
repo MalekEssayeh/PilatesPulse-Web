@@ -19,6 +19,7 @@ class ExerciceController extends AbstractController
     {
         return $this->render('exercice/index.html.twig', [
             'exercices' => $exerciceRepository->findAll(),
+            'ExerciceRepository'=>$exerciceRepository
         ]);
     }
 
@@ -89,8 +90,8 @@ class ExerciceController extends AbstractController
 
         return $this->renderForm('exercice/edit.html.twig', [
             'exercice' => $exercice,
-            'form' => $form,
-        ]);
+            'form' => $form
+                ]);
     }
 
     #[Route('/{id}/d', name: 'app_exercice_delete', methods: ['GET'])]

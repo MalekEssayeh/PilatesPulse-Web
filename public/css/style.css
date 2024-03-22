@@ -7603,7 +7603,14 @@ h6 {
   margin-top: auto;
 }
 .card__footer a {
-  margin-right: 5px; /* Adjust as needed */
+  margin-right: 5px; 
 }
+.qr-code {
+  bottom: 0;
+  margin-left: 110px;
+  margin-bottom: 10px;
+
+}
+
 
 /*# sourceMappingURL=style.css.map */
