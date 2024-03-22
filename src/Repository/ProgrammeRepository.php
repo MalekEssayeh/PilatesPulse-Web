@@ -51,6 +51,37 @@ class ProgrammeRepository extends ServiceEntityRepository
         else
             return false;
     }
+    public static function recommanded(array $programs, string $targetMuscle): array {
+        $filteredPrograms = [];
+        foreach ($programs as $program) {
+            foreach ($program->getListExercice() as $exercise) {
+                if ($exercise->getMuscle() === $targetMuscle) {
+                    $filteredPrograms[] = $program;
+                    break;
+                }
+            }
+        }
+    
+        usort($filteredPrograms, function($a, $b) use ($targetMuscle) {
+            $countA = 0;
+            $countB = 0;
+            foreach ($a->getListExercice() as $exercise) {
+                if ($exercise->getMuscle() === $targetMuscle) {
+                    $countA++;
+                }
+            }
+            foreach ($b->getListExercice() as $exercise) {
+                if ($exercise->getMuscle() === $targetMuscle) {
+                    $countB++;
+                }
+            }
+            return $countB <=> $countA;
+        });
+    
+        // Limit the result to the specified number
+        return array_slice($filteredPrograms, 0, min(3, count($filteredPrograms)));
+    }
+    
 //    /**
 //     * @return Programme[] Returns an array of Programme objects
 //     */

@@ -185,10 +185,10 @@ class ProgrammeController extends AbstractController
             return new JsonResponse(['success' => true]);
         }
     }
-    #[Route('recom', name: 'recom')]
+    #[Route('/n/recom', name: 'recom')]
     public function recom(): Response
     {
-        $command = ['python', 'C:\xampp\htdocs\PilatePulse\src\RecomIA.py', 'femme', '16', '180', '71'];
+        $command = ['python', 'C:\xampp\htdocs\PilatePulse\src\RecomIA.py', 'Homme', '16', '150', '71'];
 
         $process = new Process($command);
 

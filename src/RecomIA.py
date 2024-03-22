@@ -24,8 +24,6 @@ y = df["muscle_encoded"]
 model = LinearRegression()
 model.fit(X, y)
 sexe_encoded = sexe_mapping.get(sexe, -1)
-if sexe_encoded == -1:
-        print(f"Unknown sexe: {sexe}")
 new_data = pd.DataFrame({
         "sexe_encoded": [sexe_encoded],
         "age": [age],
