@@ -5,10 +5,11 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -146,5 +147,34 @@ class User
         }
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return [$this->role];
+    }
+
+    public function getPassword(): ?string
+    {
+        // return the hashed password for the user
+        return $this->mdp;
+    }
+
+    public function getSalt(): ?string
+    {
+        // return null if you're not using a salt to hash passwords
+        return null;
+    }
+
+    public function getUsername(): ?string
+    {
+        // return the username used to authenticate the user
+        return $this->mail;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // remove sensitive data from the user
+        // this method is necessary, but doesn't need to do anything in this case
     }
 }
