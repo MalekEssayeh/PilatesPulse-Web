@@ -10,7 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Mpdf\Mpdf;
+
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -24,7 +26,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager,UserPasswordEncoderInterface $passwordEncoder): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -32,8 +34,8 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
              
-             $password = $passwordEncoder->encodePassword($user, $form->get('mdp')->getData());
-             $user->setMdp($password);
+            
+             $user->setMdp($userPasswordHasher->hashPassword($user,$form->get('mdp')->getData()));
              
             $entityManager->persist($user);
             $entityManager->flush();
@@ -82,5 +84,36 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/users/{id}/export/pdf', name: 'user_export_pdf')]
+    public function exportUserToPDF(User $user): Response
+    {
+        // Fetch user data from the database or any other source
+        $userData = [
+            'first name' => $user->getPrenom(), 
+            'last name' => $user->getNom(),
+            'email' => $user->getMail(),
+            'Phone Number' => $user->getNumTel(),
+            'Role' => $user->getRole(),
+            
+        ];
+
+        // Generate PDF content
+        $pdfContent = $this->renderView('user/pdf.html.twig', [
+            'userData' => $userData,
+        ]);
+
+        // Create PDF object
+        $mpdf = new Mpdf();
+
+        // Write PDF content
+        $mpdf->WriteHTML($pdfContent);
+
+        // Output PDF
+        return new Response($mpdf->Output(), 200, [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 }
