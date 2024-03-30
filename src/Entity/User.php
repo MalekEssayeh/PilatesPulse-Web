@@ -19,21 +19,26 @@ class User implements UserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "You have to Enter a last name")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "You have to Enter a name")]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
     private ?string $mdp = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message: "You Have to Enter an Email Address")]
+    #[Assert\Email(message: "Enter a valid Email Address")]
     private ?string $mail = null;
 
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "You have to Enter a Phone Number")]
     private ?int $numTel = null;
 
     #[ORM\OneToMany(mappedBy: 'users', targetEntity: Promo::class)]

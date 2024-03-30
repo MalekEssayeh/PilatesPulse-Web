@@ -13,9 +13,11 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Regex; 
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
+
 
 class RegistrationFormType extends AbstractType
 {
@@ -61,9 +63,9 @@ class RegistrationFormType extends AbstractType
         ->add('plainPassword', PasswordType::class, [
             'label' => 'Password',
             'mapped' => false,
-            'attr' => ['autocomplete' => 'new-password'],
+            'attr' => ['autocomplete' => 'off'],
             'constraints' => [
-                new Assert\NotBlank([
+                new NotBlank([
                     'message' => 'Please enter a password',
                 ]),
                 new Assert\Length([
@@ -78,7 +80,7 @@ class RegistrationFormType extends AbstractType
             'label' => 'I agree to the terms and conditions',
             'mapped' => false,
             'constraints' => [
-                new Assert\IsTrue([
+                new IsTrue([
                     'message' => 'You should agree to our terms.',
                 ]),
             ],
