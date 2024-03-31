@@ -2358,6 +2358,12 @@ textarea.form-control-lg {
   -webkit-appearance: none;
           appearance: none;
 }
+.page-title {
+  text-align: center;
+  margin-bottom: 27 px;
+  font-size: 55px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
 @media (prefers-reduced-motion: reduce) {
   .form-range::-webkit-slider-thumb {
     -webkit-transition: none;

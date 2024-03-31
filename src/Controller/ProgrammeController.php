@@ -185,13 +185,14 @@ class ProgrammeController extends AbstractController
             return new JsonResponse(['success' => true]);
         }
     }
-    #[Route('/n/recom', name: 'recom',methods: ['POST'])]
+    #[Route('/n/recom', name: 'recom', methods: ['POST'])]
     public function recom(Request $request, EntityManagerInterface $entityManager, ProgrammeRepository $programmeRepository): Response
-    {   $sexe=$request->request->get('sexe');
-        $age=(string)$request->request->get('age');
-        $weight=(string)$request->request->get('weight');
-        $height=(string)$request->request->get('height');
-        $command = ['python', 'C:\xampp\htdocs\PilatePulse\src\RecomIA.py', $sexe,$age,$height,$weight];
+    {
+        $sexe = $request->request->get('sexe');
+        $age = (string)$request->request->get('age');
+        $weight = (string)$request->request->get('weight');
+        $height = (string)$request->request->get('height');
+        $command = ['python', 'C:\xampp\htdocs\PilatePulse\src\RecomIA.py', $sexe, $age, $height, $weight];
         $process = new Process($command);
 
         $process->run();
@@ -244,7 +245,159 @@ class ProgrammeController extends AbstractController
     #[Route('/n/recform', name: 'recform')]
     public function recform(): Response
     {
-        return $this->render('programme/recform.html.twig', [
+        return $this->render('programme/recform.html.twig', []);
+    }
+    /****************************************************** BAAAAAAAAAAAACK************************************** */
+    #[Route('/back/index', name: 'app_programme_indexb', methods: ['GET'])]
+    public function indexb(ProgrammeRepository $programmeRepository, EntityManagerInterface $entityManager): Response
+    {
+        $connection = $entityManager->getConnection();
+        $programmes = [];
+        foreach ($programmeRepository->findAll() as $programme) {
+            $sql = "SELECT * FROM listExercice WHERE idProg = :id";
+            $statement = $connection->executeQuery($sql, ['id' => $programme->getidprogramme()]);
+            $results = $statement->fetchAllAssociative();
+            $listExercices = [];
+            foreach ($results as $result) {
+                $sql = "SELECT * FROM exercice WHERE idExercice = :id";
+                $statement = $connection->executeQuery($sql, ['id' => $result['IDex']]);
+                $res = $statement->fetchAssociative();
+                $exercice = $entityManager->getRepository(Exercice::class)->find($res['idExercice']);
+                if ($exercice) {
+                    $listExercices[] = $exercice;
+                }
+            }
+            $programme->Listexercice = $listExercices;
+            $programmes[] = $programme;
+        }
+
+        return $this->render('back/programme/index.html.twig', [
+            'programmes' => $programmes,
+            'programmeRepository' => $programmeRepository
         ]);
+    }
+
+
+    #[Route('/back/new', name: 'app_programme_newb', methods: ['GET', 'POST'])]
+    public function newb(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $programme = new Programme();
+        $form = $this->createForm(ProgrammeType::class, $programme);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $connection = $entityManager->getConnection();
+
+            $sql = "SELECT idprogramme FROM programme ORDER BY idprogramme DESC LIMIT 1";
+
+            $statement = $connection->executeQuery($sql);
+
+            $result = $statement->fetchAssociative();
+
+            $idprogramme = $result['idprogramme'];
+            $idprogramme++;
+            $programme->setEvaluationprogramme(1);
+            $programme->setIdcoachp(123);
+            $entityManager->persist($programme);
+            $entityManager->flush();
+            foreach ($programme->getListexercice() as $value) {
+                $sql = '
+            INSERT INTO Listexercice (IDex,idProg)
+            VALUES (:value1, :value2)';
+
+                $params = [
+                    'value1' => $value->getId(),
+                    'value2' => $idprogramme,
+                ];
+
+                $statement = $connection->prepare($sql);
+                $statement->executeStatement($params);
+            }
+            return $this->redirectToRoute('app_programme_indexb', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('back/programme/new.html.twig', [
+            'programme' => $programme,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/back/{id}', name: 'app_programme_showb', methods: ['GET'])]
+    public function showb(Programme $programme): Response
+    {
+        return $this->render('back/programme/show.html.twig', [
+            'programme' => $programme,
+        ]);
+    }
+
+    #[Route('/back/{id}/edit', name: 'app_programme_editb', methods: ['GET', 'POST'])]
+    public function editb(Request $request, Programme $programme, EntityManagerInterface $entityManager): Response
+    {
+        $connection = $entityManager->getConnection();
+
+        $sql = "SELECT * FROM listExercice WHERE idProg = :id";
+
+        $statement = $connection->executeQuery($sql, ['id' => $programme->getidprogramme()]);
+
+        $results = $statement->fetchAllAssociative();
+
+
+        foreach ($results as $result) {
+            $sql = "SELECT * FROM exercice WHERE idExercice = :id";
+
+            $statement = $connection->executeQuery($sql, ['id' => $result['IDex']]);
+
+            $res = $statement->fetchAssociative();
+
+            $exercice = $entityManager->getRepository(Exercice::class)->find($res['idExercice']);
+            if ($exercice) {
+                $programme->Listexercice[] = $exercice;
+            }
+        }
+
+
+        $form = $this->createForm(ProgrammeType::class, $programme);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($results as $result) {
+                $sql = 'DELETE FROM Listexercice  WHERE IDex = :id';
+                $params = [
+                    'id' => $result['IDex'],
+                ];
+                $statement = $connection->prepare($sql);
+                $statement->executeStatement($params);
+            }
+            foreach ($programme->getListexercice() as $value) {
+                $sql = 'INSERT INTO Listexercice (IDex,idProg) VALUES (:value1, :value2)';
+                $params = [
+                    'value1' => $value->getId(),
+                    'value2' => $programme->getidprogramme(),
+                ];
+                $statement = $connection->prepare($sql);
+                $statement->executeStatement($params);
+            }
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_programme_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('back/programme/edit.html.twig', [
+            'programme' => $programme,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/back/{id}/n', name: 'app_programme_deleteb')]
+    public function deleteb(Programme $programme, EntityManagerInterface $entityManager): Response
+    {
+        $connection = $entityManager->getConnection();
+
+        $entityManager->remove($programme);
+        $entityManager->flush();
+        $sql = "DELETE FROM `ListExercice` WHERE IDprog = :id";
+        $connection->executeQuery($sql, ['id' => $programme->getidprogramme()]);
+
+
+        return $this->redirectToRoute('app_programme_indexb', [], Response::HTTP_SEE_OTHER);
     }
 }
