@@ -105,19 +105,21 @@
 								</table>
 
 							{% else %}
-								No activities associated with this event.
+								No Exercices associated with this Programme.
 							{% endif %}
 						</td>
 					</tr>
 				</tbody>
+
+				
 				<tr>
-					<th>Edit</th>
-					<td>{{ programme.Nomprogramme }}</td>
+					<th>Edit/Delete</th>
+					<td class="d-flex justify-content-center align-items-center">
+						<div><a class="btn flosun-button primary-btn rounded-0 mr-2" href="{{ path('app_programme_editb', {'id': programme.idprogramme}) }}" style="width: 120px;">Update</a></div>
+						<div style="margin-left:50px"><a class="btn flosun-button primary-btn rounded-0 ml-2" href="{{ path('app_programme_deleteb', {'id': programme.idprogramme}) }}" style="width: 120px;">Delete</a></div>
+					</td>
 				</tr>
-				<tr>
-					<th>Delete</th>
-					<td>{{ programme.Nomprogramme }}</td>
-				</tr>
+
 			</tr>
 		</table>
 

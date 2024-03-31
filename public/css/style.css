@@ -7625,5 +7625,225 @@ h6 {
 
 }
 
+.flosun-button {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+  height: 45px;
+  letter-spacing: 0.025em;
+  line-height: 45px;
+  padding: 0 30px;
+  text-align: center;
+  vertical-align: middle;
+  width: auto;
+  -webkit-transition: all 0.3s ease 0s;
+  -o-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+@media (max-width: 767px) {
+  .flosun-button {
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 575px) {
+  .flosun-button {
+    font-size: 14px;
+    padding: 0 15px;
+    height: 42px;
+    line-height: 42px;
+  }
+}
+
+@media (max-width: 479px) {
+  .flosun-button {
+    font-size: 12px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+  }
+}
+
+.flosun-button.primary-btn {
+  background-color: #E72463;
+  color: #ffffff;
+}
+
+.flosun-button.primary-btn:hover {
+  background-color: #b91345;
+}
+
+.flosun-button.secondary-btn {
+  position: relative;
+  background: #000000;
+  color: #ffffff;
+  z-index: 1;
+}
+
+.flosun-button.secondary-btn:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 0%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #E72463;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.flosun-button.secondary-btn:hover:after {
+  width: 100%;
+}
+
+.flosun-button.secondary-btn.theme-color {
+  position: relative;
+  background: #E72463;
+  color: #ffffff;
+  z-index: 1;
+}
+
+.flosun-button.secondary-btn.theme-color:after {
+  background: #000000;
+}
+
+.flosun-button.secondary-btn.secondary-border {
+  border: 2px solid #000000;
+  background: transparent;
+  color: #000000;
+  line-height: 42px;
+}
+
+.flosun-button.secondary-btn.secondary-border:hover {
+  background: #E72463;
+  color: #ffffff;
+  border-color: #E72463;
+}
+
+@media (max-width: 575px) {
+  .flosun-button.secondary-btn.secondary-border {
+    line-height: 40px;
+  }
+}
+
+@media (max-width: 479px) {
+  .flosun-button.secondary-btn.secondary-border {
+    border: 1px solid #000000;
+  }
+}
+
+.flosun-button.white-btn {
+  background-color: #d8d8d8;
+  color: #1b1b1c;
+}
+
+.flosun-button.white-btn:hover {
+  background-color: #E72463;
+  border-color: #E72463;
+  color: #ffffff;
+  -webkit-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+}
+
+.flosun-button.black-btn {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+.flosun-button.black-btn:hover {
+  background-color: #E72463;
+  border-color: #E72463;
+  color: #ffffff;
+  -webkit-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+}
+
+.flosun-button:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.flosun-button.button-icon {
+  position: relative;
+  overflow: hidden;
+}
+
+.flosun-button.button-icon.dark-btn {
+  background: #000000;
+  color: #ffffff;
+  border-radius: 0%;
+}
+
+.flosun-button.button-icon:before {
+  left: -100%;
+  top: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  line-height: 2.5;
+  font-size: 180%;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  content: "\e82e";
+  font-family: Linearicons-Free;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  background: #E72463;
+  color: #ffffff;
+  z-index: 1;
+}
+.intro11-slider .intro11-content .flosun-button {
+  margin-top: 30px;
+}
+
+@media (max-width: 767px) {
+  .intro11-slider .intro11-content .flosun-button {
+    margin-top: 0;
+  }
+}
+.intro11-slider .intro11-content-2 .flosun-button {
+  margin-top: 30px;
+}
+
+@media (max-width: 767px) {
+  .intro11-slider .intro11-content-2 .flosun-button {
+    margin-top: 0;
+  }
+}
+.flosun-button.button-icon span {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flosun-button.button-icon:hover:before {
+  left: 0;
+  -webkit-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+}
 
 /*# sourceMappingURL=style.css.map */
