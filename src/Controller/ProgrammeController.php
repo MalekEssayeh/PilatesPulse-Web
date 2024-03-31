@@ -49,16 +49,16 @@ class ProgrammeController extends AbstractController
 
             $sql = "SELECT idprogramme FROM programme ORDER BY idprogramme DESC LIMIT 1";
 
+            $programme->setEvaluationprogramme(1);
+            $programme->setIdcoachp(123);
+            $entityManager->persist($programme);
+            $entityManager->flush();
             $statement = $connection->executeQuery($sql);
 
             $result = $statement->fetchAssociative();
 
             $idprogramme = $result['idprogramme'];
-            $idprogramme++;
-            $programme->setEvaluationprogramme(1);
-            $programme->setIdcoachp(123);
-            $entityManager->persist($programme);
-            $entityManager->flush();
+
             foreach ($programme->getListexercice() as $value) {
                 $sql = '
             INSERT INTO Listexercice (IDex,idProg)
@@ -136,6 +136,7 @@ class ProgrammeController extends AbstractController
                 $statement = $connection->prepare($sql);
                 $statement->executeStatement($params);
             }
+            $entityManager->persist($programme);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_programme_index', [], Response::HTTP_SEE_OTHER);
@@ -295,7 +296,6 @@ class ProgrammeController extends AbstractController
             $result = $statement->fetchAssociative();
 
             $idprogramme = $result['idprogramme'];
-            $idprogramme++;
             $programme->setEvaluationprogramme(1);
             $programme->setIdcoachp(123);
             $entityManager->persist($programme);
@@ -377,9 +377,10 @@ class ProgrammeController extends AbstractController
                 $statement = $connection->prepare($sql);
                 $statement->executeStatement($params);
             }
+            $entityManager->persist($programme);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_programme_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_programme_indexb', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('back/programme/edit.html.twig', [
             'programme' => $programme,

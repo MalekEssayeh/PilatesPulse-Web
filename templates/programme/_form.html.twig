@@ -78,7 +78,7 @@
 
 <div class="form-container">
 
-	{{ form_start(form, {'method': 'POST', 'attr': {'novalidate': 'novalidate'}}) }}
+	{{ form_start(form, {'method': 'POST', 'attr': {'novalidate': 'novalidate','onsubmit': 'return validateInput1();'}}) }}
 	<div class="mb-3">
 		<label for="{{ form.nomprogramme.vars.id }}">Programme Name</label>
 		{{ form_widget(form.nomprogramme) }}
