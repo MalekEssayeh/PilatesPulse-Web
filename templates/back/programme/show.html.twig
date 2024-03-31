@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Programme{% endblock %}
+
+{% block body %}
+    <h1>Programme</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ programme.idprogramme }}</td>
+            </tr>
+            <tr>
+                <th>Nomprogramme</th>
+                <td>{{ programme.nomprogramme }}</td>
+            </tr>
+            <tr>
+                <th>Idcoachp</th>
+                <td>{{ programme.idcoachp }}</td>
+            </tr>
+            <tr>
+                <th>Dureeprogramme</th>
+                <td>{{ programme.dureeprogramme }}</td>
+            </tr>
+            <tr>
+                <th>Evaluationprogramme</th>
+                <td>{{ programme.evaluationprogramme }}</td>
+            </tr>
+            <tr>
+                <th>Difficulteprogramme</th>
+                <td>{{ programme.difficulteprogramme }}</td>
+            </tr>
+            <tr>
+                <th>Listexercice</th>
+                <td>{{ programme.Listexercice ? programme.Listexercice|join(', ') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_programme_index') }}">back to list</a>
+
+    <a href="{{ path('app_programme_edit', {'id': programme.idprogramme}) }}">edit</a>
+
+    {{ include('programme/_delete_form.html.twig') }}
+{% endblock %}
