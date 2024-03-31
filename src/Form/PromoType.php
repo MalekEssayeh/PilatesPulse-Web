@@ -10,6 +10,10 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\User;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 class PromoType extends AbstractType
@@ -17,10 +21,22 @@ class PromoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('pourcentage')
-            ->add('validite')
+            ->add('pourcentage', null, [
+                'constraints' => [
+                    new NotBlank(), // not blank
+                    new Type('numeric'), //  numeric
+                    new Range(['min' => 0, 'max' => 100]), // within the specified range
+                ],
+            ])
+            ->add('validite', null, [
+                'constraints' => [
+                    new Assert\GreaterThan([ //date ba3ed lyoum only 
+                        'value' => 'today',
+                        'message' => 'The date must be a future date.'
+                    ])
+                ]
+            ])
            // ->add('isActive')
-           // ->add('users')
            ->add('users', EntityType::class, [
             'class' => User::class,
             'choice_label' => function(User $user) {
