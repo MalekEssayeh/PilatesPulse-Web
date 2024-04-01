@@ -1,52 +1,113 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin.html.twig' %}
 
-{% block title %}Exercice index
+{% block title %}exercice index
 {% endblock %}
 
 {% block body %}
+	<link rel="stylesheet" href="path/to/font-awesome/css/all.min.css">
+	<style>
+		/* Custom CSS for exercice index */
 
+		/* Page title */
+		.page-title {
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 20px;
+		}
+
+		/* Table style */
+		.table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		.table th,
+		.table td {
+			padding: 10px;
+			border: 1px solid #ddd;
+		}
+
+		/* Table header style */
+		.table th {
+			background-color: #f2f2f2;
+			font-weight: bold;
+		}
+
+		/* Table body style */
+		.table tbody td {
+			background-color: #fff;
+		}
+
+		/* Nested table style */
+		.nested-table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 10px;
+		}
+
+		/* Nested table header style */
+		.nested-table th {
+			background-color: #f2f2f2;
+			font-weight: bold;
+			text-align: left;
+		}
+
+		/* Nested table body style */
+		.nested-table td {
+			padding: 8px;
+			border-bottom: 1px solid #ddd;
+		}
+
+	</style>
 	<div class="container">
-		<div class="page-title">Exercices Index</div>
+		<div class="page-title">exercices Index</div>
+		{% for exercice in exercices %}
+			<table class="table">
+				<tbody>
 
-		<div class="row">
-			{% for exercice in exercices %}
-				<div class="cardd">
-					<div class="card__header">
-						<img src="{{ asset('uploads/' ~ exercice.Demonstration) }}" class="card__image" width="600">
-					</div>
-					<div class="card__body">
-						<h4>{{ exercice.nomexercice }}</h4>
-						{% if exercice.Muscle =="Cuisses" %}
-							<span class="tag tag-blue">{{ exercice.Muscle }}</span>
-						{% elseif exercice.Muscle =="Abdominaux" %}
-							<span class="tag tag-brown">{{ exercice.Muscle }}</span>
-						{% elseif exercice.Muscle =="PlancherPelvin" %}
-							<span class="tag tag-1">{{ exercice.Muscle }}</span>
-						{% elseif exercice.Muscle =="Dos" %}
-							<span class="tag tag-2">{{ exercice.Muscle }}</span>
-						{% elseif exercice.Muscle =="Fessiers" %}
-							<span class="tag tag-3">{{ exercice.Muscle }}</span>
-						{% elseif exercice.Muscle =="Bras" %}
-							<span class="tag tag-5">{{ exercice.Muscle }}</span>
-						{% elseif exercice.Muscle =="StabilisateurEpaule" %}
-							<span class="tag tag-4">{{ exercice.Muscle }}</span>
-						{% else %}
-							<span class="tag tag-red">{{ exercice.Muscle }}</span>
-						{% endif %}
-					</div>
-					<div class="card__footer">
-						<a href="{{ path('app_exercice_show', {'id': exercice.id}) }}" class="genric-btn success-border circle">More</a>
-						<a href="{{ path('app_exercice_edit', {'id': exercice.id}) }}" class="genric-btn info-border circle">Update</a>
-						<a href="{{ path('app_exercice_delete', {'id': exercice.id}) }}" class="genric-btn danger-border circle">Delete</a>
-					</div>
-					<div class="qr-code">
-						<img src="{{ ExerciceRepository.QRcode(exercice.nomexercice, exercice.Difficulteexercice,exercice.Muscle, exercice.EvaluationExercice) }}" alt="QR Code">
-					</div>
-				</div>
-			{% endfor %}
+					<tr>
+						<th>Name</th>
+						<td>{{ exercice.nomexercice }}</td>
+					</tr>
+					<tr>
+						<th>Image</th>
+						<td><img src="{{ asset('uploads/' ~ exercice.Demonstration) }}"  width="600"></td>
+					</tr>
+					<tr>
+						<th>Muscle </th>
+						<td>{{ exercice.Muscle }}</td>
+					</tr>
+					<tr>
+						<th>Difficuly </th>
+						<td>{{ exercice.Difficulteexercice }}</td>
+					</tr>
+					<tr>
+						<th>Difficuly </th>
+						<td>{{ exercice.Difficulteexercice }}</td>
+					</tr>
+					<tr>
+						<th>Evaluation </th>
+						<td><div class="product-rating mb-3">
+							{% for i in 1..exercice.EvaluationExercice %}
+								<i class="fa fa-star" style="color: gold;"></i>
+							{% endfor %}
+							{% for i in exercice.EvaluationExercice + 1..5 %}
+								<i class="fa fa-star-o" style="color: gold;"></i>
+							{% endfor %}
+						</div></td>
+					</tr>
+					<tr>
+					<th>Edit/Delete</th>
+					<td class="d-flex justify-content-center align-items-center">
+						<div><a class="btn flosun-button primary-btn rounded-0 mr-2" href="{{ path('app_exercice_editb', {'id': exercice.id}) }}" style="width: 120px;">Update</a></div>
+						<div style="margin-left:50px"><a class="btn flosun-button primary-btn rounded-0 ml-2" href="{{ path('app_exercice_deleteb', {'id': exercice.id}) }}" style="width: 120px;">Delete</a></div>
+					</td>
+				</tr>
+					
+					
+		</table>
 
-		</div>
+	{% endfor %}
 
-		<a href="{{ path('app_exercice_new') }}">Create New</a>
-	</div>
+
 {% endblock %}

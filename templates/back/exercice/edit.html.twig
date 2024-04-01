@@ -1,13 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin.html.twig' %}
 
 {% block title %}Edit Exercice{% endblock %}
 
 {% block body %}
-    <h1>Edit Exercice</h1>
+<div class="container" style="display: flex; justify-content: center; align-items: center;">
+    <div>
+        <a class="btn flosun-button primary-btn rounded-0 mr-2" href="{{ path('app_exercice_indexb') }}">Back To List</a>
+        <div class="page-title">Edit Exercice</div>
+        {{ include('back/exercice/_form.html.twig', {'button_label': 'Update'}) }}
 
-    {{ include('exercice/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_exercice_index') }}">back to list</a>
-
-    {{ include('exercice/_delete_form.html.twig') }}
+    
 {% endblock %}

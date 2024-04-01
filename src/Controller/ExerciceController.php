@@ -19,7 +19,7 @@ class ExerciceController extends AbstractController
     {
         return $this->render('exercice/index.html.twig', [
             'exercices' => $exerciceRepository->findAll(),
-            'ExerciceRepository'=>$exerciceRepository
+            'ExerciceRepository' => $exerciceRepository
         ]);
     }
 
@@ -34,14 +34,16 @@ class ExerciceController extends AbstractController
             $file = $form['Demonstration']->getData();
             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move(
-                $this->getParameter('upload_directory'), 
-                $fileName);
+                $this->getParameter('upload_directory'),
+                $fileName
+            );
             $exercice->setDemonstration($fileName);
             $file = $form['Video']->getData();
             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move(
-                $this->getParameter('upload_directory'), 
-                $fileName);
+                $this->getParameter('upload_directory'),
+                $fileName
+            );
             $exercice->setVideo($fileName);
             $exercice->setIdcoach(123);
             $entityManager->persist($exercice);
@@ -71,17 +73,19 @@ class ExerciceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-             $file = $form['Demonstration']->getData();
+            $file = $form['Demonstration']->getData();
             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move(
-                $this->getParameter('upload_directory'), 
-                $fileName);
+                $this->getParameter('upload_directory'),
+                $fileName
+            );
             $exercice->setDemonstration($fileName);
             $file = $form['Video']->getData();
             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move(
-                $this->getParameter('upload_directory'), 
-                $fileName);
+                $this->getParameter('upload_directory'),
+                $fileName
+            );
             $exercice->setVideo($fileName);
             $entityManager->flush();
 
@@ -91,15 +95,108 @@ class ExerciceController extends AbstractController
         return $this->renderForm('exercice/edit.html.twig', [
             'exercice' => $exercice,
             'form' => $form
-                ]);
+        ]);
     }
 
     #[Route('/{id}/d', name: 'app_exercice_delete', methods: ['GET'])]
-    public function delete( Exercice $exercice, EntityManagerInterface $entityManager): Response
+    public function delete(Exercice $exercice, EntityManagerInterface $entityManager): Response
     {
-            $entityManager->remove($exercice);
-            $entityManager->flush();
+        $entityManager->remove($exercice);
+        $entityManager->flush();
 
         return $this->redirectToRoute('app_exercice_index', [], Response::HTTP_SEE_OTHER);
+    }
+    /*********************BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACK*************************/
+    #[Route('/back/index', name: 'app_exercice_indexb', methods: ['GET'])]
+    public function indexB(ExerciceRepository $exerciceRepository): Response
+    {
+        return $this->render('BACK/exercice/index.html.twig', [
+            'exercices' => $exerciceRepository->findAll(),
+            'ExerciceRepository' => $exerciceRepository
+        ]);
+    }
+
+    #[Route('/back/new', name: 'app_exercice_newb', methods: ['GET', 'POST'])]
+    public function newb(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $exercice = new Exercice();
+        $form = $this->createForm(ExerciceType::class, $exercice);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['Demonstration']->getData();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('upload_directory'),
+                $fileName
+            );
+            $exercice->setDemonstration($fileName);
+            $file = $form['Video']->getData();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('upload_directory'),
+                $fileName
+            );
+            $exercice->setVideo($fileName);
+            $exercice->setIdcoach(123);
+            $entityManager->persist($exercice);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_exercice_indexb', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('BACK/exercice/new.html.twig', [
+            'exercice' => $exercice,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/back/{id}', name: 'app_exercice_showb', methods: ['GET'])]
+    public function showb(Exercice $exercice): Response
+    {
+        return $this->render('BACK/exercice/show.html.twig', [
+            'exercice' => $exercice,
+        ]);
+    }
+
+    #[Route('/back/{id}/edit', name: 'app_exercice_editb', methods: ['GET', 'POST'])]
+    public function editb(Request $request, Exercice $exercice, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ExerciceType::class, $exercice);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['Demonstration']->getData();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('upload_directory'),
+                $fileName
+            );
+            $exercice->setDemonstration($fileName);
+            $file = $form['Video']->getData();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('upload_directory'),
+                $fileName
+            );
+            $exercice->setVideo($fileName);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_exercice_indexb', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('BACK/exercice/edit.html.twig', [
+            'exercice' => $exercice,
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/back/{id}/d', name: 'app_exercice_deleteb', methods: ['GET'])]
+    public function deleteb(Exercice $exercice, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($exercice);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_exercice_indexb', [], Response::HTTP_SEE_OTHER);
     }
 }

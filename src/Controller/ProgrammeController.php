@@ -188,13 +188,13 @@ class ProgrammeController extends AbstractController
         $isStarred = $request->request->get('isStarred');
 
         $favorisRepository = $entityManager->getRepository(Favoris::class);
-        $favoris = $favorisRepository->findOneBy(['idprogramme' => $programmeId, 'iduser' => 123]); // Assuming 123 is the user ID
+        $favoris = $favorisRepository->findOneBy(['idprogramme' => $programmeId, 'iduser' => 123]); 
 
         if ($isStarred === 'false') {
             if (!$favoris) {
                 $favoris = new Favoris();
                 $favoris->setIdprogramme($programmeId);
-                $favoris->setIdUser(123); // Assuming 123 is the user ID
+                $favoris->setIdUser(123); 
                 $entityManager->persist($favoris);
                 $entityManager->flush();
             }
