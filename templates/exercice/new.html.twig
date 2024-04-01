@@ -3,8 +3,8 @@
 {% block title %}New Exercice{% endblock %}
 
 {% block body %}
+<div style="margin-top:100px" class="page-title">New Exercice</div>
 
     {{ include('exercice/_form.html.twig') }}
 
-    <a href="{{ path('app_exercice_index') }}">back to list</a>
 {% endblock %}

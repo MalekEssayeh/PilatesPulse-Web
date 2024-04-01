@@ -82,8 +82,29 @@ class ProgrammeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_programme_show', methods: ['GET'])]
-    public function show(Programme $programme): Response
-    {
+    public function show(Programme $programme,EntityManagerInterface $entityManager): Response
+    { 
+        $connection = $entityManager->getConnection();
+
+        $sql = "SELECT * FROM listExercice WHERE idProg = :id";
+
+        $statement = $connection->executeQuery($sql, ['id' => $programme->getidprogramme()]);
+
+        $results = $statement->fetchAllAssociative();
+
+
+        foreach ($results as $result) {
+            $sql = "SELECT * FROM exercice WHERE idExercice = :id";
+
+            $statement = $connection->executeQuery($sql, ['id' => $result['IDex']]);
+
+            $res = $statement->fetchAssociative();
+
+            $exercice = $entityManager->getRepository(Exercice::class)->find($res['idExercice']);
+            if ($exercice) {
+                $programme->Listexercice[] = $exercice;
+            }
+        }
         return $this->render('programme/show.html.twig', [
             'programme' => $programme,
         ]);
