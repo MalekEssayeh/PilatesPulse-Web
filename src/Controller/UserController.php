@@ -34,8 +34,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-             
-            
              $user->setMdp($userPasswordHasher->hashPassword($user,$form->get('mdp')->getData()));
              
             $entityManager->persist($user);
