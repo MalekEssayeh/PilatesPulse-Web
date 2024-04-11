@@ -52,7 +52,7 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
     $user = $token->getUser();
 
     // Check if the user has the 'admin' role
-    if (in_array('admin', $user->getRole())) {
+    if (in_array('ROLE_ADMIN', $user->getRoles())) {
         // Redirect to the admin page
         return new RedirectResponse($this->urlGenerator->generate('app_admin'));
     }
