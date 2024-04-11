@@ -60,7 +60,7 @@ class RegistrationFormType extends AbstractType
                 ]),
             ],
         ])
-        ->add('plainPassword', PasswordType::class, [
+        ->add('mdp', PasswordType::class, [
             'label' => 'Password',
             'mapped' => false,
             'attr' => ['autocomplete' => 'off'],

@@ -1,0 +1,9 @@
+{% extends 'Admin.html.twig' %}
+
+{% block body %}
+    {% for user in users %}
+        <div>{{ user.nom }} {{ user.prenom }} - {{ user.role }}</div>
+        <!-- Render other user information as needed -->
+    {% endfor %}
+{% endblock %}
+

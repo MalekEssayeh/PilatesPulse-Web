@@ -28,7 +28,7 @@ class RegistrationController extends AbstractController
             $user->setMdp(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('mdp')->getData() ////////////////// changed 'plainPassword' to 'mdp'
                 )
             );
 

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Mpdf\Mpdf;
 
 
@@ -116,4 +117,19 @@ class UserController extends AbstractController
             'Content-Type' => 'application/pdf',
         ]);
     }
+
+// fetch the search query from the request, perform the search in the UserRepository, and render the search results as HTML.
+#[Route('/search', name: 'user_search')]
+public function search(Request $request, UserRepository $userRepository): JsonResponse
+{
+    $query = $request->query->get('query');
+    $users = $userRepository->searchUsers($query); 
+
+    // Render the HTML for the search results
+    $searchResults = $this->renderView('user/search_results.html.twig', [
+        'users' => $users,
+    ]);
+
+    return new JsonResponse($searchResults);
+}
 }

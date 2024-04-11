@@ -21,6 +21,30 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+  /**
+ * Search for users based on the provided query string.
+ *
+ * @param string $query The search query
+ * @return array The array of users matching the search criteria
+ */
+public function searchUsers(string $query): array
+{
+    // Create a query builder
+    $qb = $this->createQueryBuilder('u');
+
+    // Add conditions to the query based on the search query
+    $qb->where($qb->expr()->orX(
+        $qb->expr()->like('u.nom', ':query'),
+        $qb->expr()->like('u.prenom', ':query'),
+        $qb->expr()->like('u.role', ':query')
+    ))
+    ->setParameter('query', '%'.$query.'%');
+
+    // Execute the query and return the result
+    return $qb->getQuery()->getResult();
+}
+
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
