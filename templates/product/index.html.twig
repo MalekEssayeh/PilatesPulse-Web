@@ -1,0 +1,47 @@
+{% extends 'Admin.html.twig' %}
+
+{% block title %}Product index{% endblock %}
+
+{% block body %}
+    <h1 style="text-align: center; margin-left: 20px; ">
+        Product index</h1>
+
+<div class="container">
+
+
+    <table style="margin-top: 150px" class="table">
+               <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>product name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>quantity left</th>
+                        <th>Show</th>
+                        <th>Modify</th>
+                        <th>Delete</th>
+                    </tr>
+               <tr></tr>
+               </thead>
+            <tbody>
+            {% for product in products %}
+                <tr>
+                    <td><img src="{{ asset('uploads/' ~ product.image) }}" class="card__image" width="250" height="200"></td>
+                    <td>{{ product.nameproduct }}</td>
+                    <td>{{ product.productdescription }}</td>
+                    <td>{{ product.priceproduct }}</td>
+                    <td>{{ product.stock }}</td>
+                    <td><a href="{{ path('app_product_show', {'idproduct': product.idproduct}) }}" style="text-decoration: none; color: #FFA2B9; font-weight: bold;">click to show</a></td>
+                    <td><a href="{{ path('app_product_edit', {'idproduct': product.idproduct}) }}" style="text-decoration: none; color: #FFA2B9; font-weight: bold;" >Update</a></td>
+                    <td>    {{ include('product/_delete_form.html.twig') }}   </td>
+                </tr>
+            </tbody>
+        {% endfor %}
+
+    </table>
+    <div style="margin-bottom: 50px;">
+        <a href="{{ path('app_product_new') }}" style="margin-left: 50px; margin-bottom: 35px; text-decoration: none; color: #7c32db; font-weight: bold;">Create new</a>
+    </div>
+</div>
+
+{% endblock %}
