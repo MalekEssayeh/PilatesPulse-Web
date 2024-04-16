@@ -1,4 +1,70 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
+<style>
+    {% block stylesheet %}
+
+    .form-container {
+        width: 700px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: 20px auto 80px;
+    }
+
+    .form-container label {
+        margin-bottom: 5px;
+    }
+
+    .form-container .form-control {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    .form-container button {
+        width: 100%;
+    }
+    .label-container {
+        display: inline-block;
+        margin-right: 20px; /* Adjust as needed for spacing */
+    }
+
+
+    {% endblock %}
+
+</style>
+
+
+<div class="form-container">
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+    <div class="mb-3">
+        <label for="{{ form.nameproduct.vars.id }}">Product Name</label>
+        {{ form_widget(form.nameproduct) }}
+        {{ form_errors(form.nameproduct) }}
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.image.vars.id }}">Image</label>
+        {{ form_widget(form.image , {'attr': {'class': 'form-control' }}) }}
+        {{ form_errors(form.image) }}
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.productdescription.vars.id }}">Product description</label>
+        {{ form_widget(form.productdescription) }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.priceproduct.vars.id }}">Price</label>
+        {{ form_widget(form.priceproduct) }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.image.vars.id }}">Image</label>
+        {{ form_widget(form.image , {'attr': {'class': 'form-control' }}) }}
+        {{ form_errors(form.image) }}
+
+    </div>
+
+
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+</div>

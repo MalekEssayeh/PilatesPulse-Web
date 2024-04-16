@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin.html.twig' %}
 
 {% block title %}New Product{% endblock %}
 
@@ -6,6 +6,11 @@
     <h1>Create new Product</h1>
 
     {{ include('product/_form.html.twig') }}
+<div class="container" style="display: flex;  align-items: baseline; justify-content: flex-end ">
+    <div>
+        <a class="btn flosun-button primary-btn rounded-0 mr-2" href="{{ path('app_product_index') }}">Back To List</a>
+    </div>
+</div>
 
-    <a href="{{ path('app_product_index') }}">back to list</a>
+
 {% endblock %}

@@ -47,11 +47,50 @@ class ProductType extends AbstractType
                 ],
             ])
 
-            ->add('productdescription')
-            ->add('priceproduct')
-            ->add('stock')
-            ->add('idcategory')
-        ;
+
+            ->add('productdescription', null, [
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Please insert a description for your product'
+                    ]),
+                ]
+            ])
+
+            ->add('priceproduct', null, [
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Price cannot be blank.'
+                    ]),
+                    new Assert\Type([
+                        'type' => 'numeric',
+                        'message' => 'Price must be a number.',
+                    ]),
+                    new Assert\PositiveOrZero([
+                        'message' => 'Price must be a positive number.'
+                    ]),
+                ]
+            ])
+            ->add('stock', null, [
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Stock cannot be blank.'
+                    ]),
+                    new Assert\Type([
+                        'type' => 'integer',
+                        'message' => 'Stock must be an integer.',
+                    ]),
+                    new Assert\PositiveOrZero([
+                        'message' => 'Stock must be a positive number or zero.'
+                    ]),
+                ]
+            ])
+            ->add('idcategory', null, [
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Category cannot be blank.'
+                    ])
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

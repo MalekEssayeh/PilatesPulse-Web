@@ -22,12 +22,17 @@ class Product
     private ?string $image = null;
 
     #[ORM\Column(length: 1000, nullable: true)]
+    #[Assert\NotBlank(message: "Description is required.")]
+    #[Assert\Type(type: "string", message: "Product description must be a string.")]
+    #[Assert\Length(max: 1000, maxMessage: "Product description cannot be longer than {{ limit }} characters.")]
     private ?string $productdescription = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Description is required.")]
     private ?float $priceproduct = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Description is required.")]
     private ?int $stock = null;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
