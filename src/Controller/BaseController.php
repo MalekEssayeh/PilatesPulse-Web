@@ -22,4 +22,12 @@ class BaseController extends AbstractController
             'controller_name' => 'AdminController',
         ]);
     }
+
+    #[Route('/category', name: 'app_category')]
+    public function indexCat(CategoryController $category): Response
+    {
+        return $this->render('category/show.html.twig', [
+            'controller_name' => 'BaseController',
+        ]);
+    }
 }

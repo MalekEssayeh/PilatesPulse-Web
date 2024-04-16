@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,15 @@ class Event
 
     #[ORM\Column(length: 255)]
     private ?string $image_url = null;
+
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Session::class)]
+    private Collection $sessions;
+
+
+    public function __construct()
+    {
+        $this->sessions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -117,6 +128,36 @@ class Event
     public function setImageUrl(string $image_url): static
     {
         $this->image_url = $image_url;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, session>
+     */
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
+    }
+
+    public function addSession(session $session): static
+    {
+        if (!$this->sessions->contains($session)) {
+            $this->sessions->add($session);
+            $session->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSession(session $session): static
+    {
+        if ($this->sessions->removeElement($session)) {
+            // set the owning side to null (unless already changed)
+            if ($session->getEvent() === $this) {
+                $session->setEvent(null);
+            }
+        }
 
         return $this;
     }
