@@ -70,41 +70,34 @@
 						<div class="sb-nav-link-icon">
 							<i class="fas fa-columns"></i>
 						</div>
-						Layouts
+						Products
 						<div class="sb-sidenav-collapse-arrow">
 							<i class="fas fa-angle-down"></i>
 						</div>
 					</a>
 					<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 						<nav class="sb-sidenav-menu-nested nav">
-							<a class="nav-link" href="layout-static.html">Static Navigation</a>
-							<a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+							<a class="nav-link" href="{{ path('app_product_index') }}">Index</a>
 						</nav>
 					</div>
 					<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
 						<div class="sb-nav-link-icon">
 							<i class="fas fa-book-open"></i>
 						</div>
-						Pages
+						Categories
 						<div class="sb-sidenav-collapse-arrow">
 							<i class="fas fa-angle-down"></i>
 						</div>
 					</a>
 					<div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
 						<nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-							<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-								Authentication
+							<a class="nav-link collapsed" href="{{ path('app_category_index') }}" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+								Index
 								<div class="sb-sidenav-collapse-arrow">
 									<i class="fas fa-angle-down"></i>
 								</div>
 							</a>
-							<div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-								<nav class="sb-sidenav-menu-nested nav">
-									<a class="nav-link" href="login.html">Login</a>
-									<a class="nav-link" href="register.html">Register</a>
-									<a class="nav-link" href="password.html">Forgot Password</a>
-								</nav>
-							</div>
+
 							<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
 								Error
 								<div class="sb-sidenav-collapse-arrow">
@@ -712,18 +705,7 @@
 		</main>
 		{% endblock %}
 		{% block footer %}
-			<footer class="py-4 bg-light mt-auto">
-				<div class="container-fluid px-4">
-					<div class="d-flex align-items-center justify-content-between small">
-						<div class="text-muted">Copyright &copy; Your Website 2023</div>
-						<div>
-							<a href="#">Privacy Policy</a>
-							&middot;
-							<a href="#">Terms &amp; Conditions</a>
-						</div>
-					</div>
-				</div>
-			</footer>
+
 		{% endblock %}
 	</div>
 </div>

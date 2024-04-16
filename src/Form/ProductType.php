@@ -51,7 +51,7 @@ class ProductType extends AbstractType
             ->add('productdescription', null, [
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'Please insert a description for your product'
+                        'message' => 'Please insert a description'
                     ]),
                 ]
             ])

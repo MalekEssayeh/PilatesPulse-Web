@@ -1,4 +1,11 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
+<div class="form-container" style="margin-top: 85px">
+
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+    <div class="mb-3">
+        <label for="{{ form.namecat.vars.id }}">Category name</label>
+        {{ form_widget(form.namecat) }}
+        {{ form_errors(form.namecat) }}
+    </div>
+
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

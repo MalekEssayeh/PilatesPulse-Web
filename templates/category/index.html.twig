@@ -1,4 +1,4 @@
-{% extends '../../Admin.html.twig' %}
+{% extends 'admin.html.twig' %}
 
 {% block title %}Category index{% endblock %}
 
@@ -6,12 +6,13 @@
 
     <h1>Category index</h1>
 
-    <table class="table">
+    <table class="table" style="margin-top: 100px">
         <thead>
             <tr>
                 <th>Idcategory</th>
                 <th>Namecat</th>
                 <th>actions</th>
+                <th>delete</th>
             </tr>
         </thead>
         <tbody>
@@ -20,9 +21,11 @@
                 <td>{{ category.idcategory }}</td>
                 <td>{{ category.namecat }}</td>
                 <td>
-                    <a href="{{ path('app_category_show', {'idcategory': category.idcategory}) }}">show</a>
-                    <a href="{{ path('app_category_edit', {'idcategory': category.idcategory}) }}">edit</a>
+                    <a  class="btn flosun-button primary-btn rounded-0 mr-2" style="text-decoration: none; color: #FFA2B9; font-weight: bold;" href="{{ path('app_category_show', {'idcategory': category.idcategory}) }}">show</a>
+                    <a  class="btn flosun-button primary-btn rounded-0 mr-2" style="text-decoration: none; color: #FFA2B9; font-weight: bold;" href="{{ path('app_category_edit', {'idcategory': category.idcategory}) }}">edit</a>
                 </td>
+                <td  class="btn flosun-button primary-btn rounded-0 mr-2" style="text-decoration-color: #ff8f56">    {{ include('category/_delete_form.html.twig') }}   </td>
+
             </tr>
         {% else %}
             <tr>
@@ -32,5 +35,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_category_new') }}">Create new</a>
+    <a style="margin-left: 50px; margin-bottom: 35px; text-decoration: none; color: #7c32db; font-weight: bold;" href="{{ path('app_category_new') }}">Create new</a>
 {% endblock %}

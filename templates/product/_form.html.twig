@@ -52,19 +52,25 @@
     <div class="mb-3">
         <label for="{{ form.productdescription.vars.id }}">Product description</label>
         {{ form_widget(form.productdescription) }}
+        {{ form_errors(form.productdescription) }}
+
     </div>
     <div class="mb-3">
         <label for="{{ form.priceproduct.vars.id }}">Price</label>
         {{ form_widget(form.priceproduct) }}
+        {{ form_errors(form.priceproduct) }}
     </div>
     <div class="mb-3">
-        <label for="{{ form.image.vars.id }}">Image</label>
-        {{ form_widget(form.image , {'attr': {'class': 'form-control' }}) }}
-        {{ form_errors(form.image) }}
-
+        <label for="{{ form.stock.vars.id }}">Stock</label>
+        {{ form_widget(form.stock) }}
+        {{ form_errors(form.stock) }}
+    </div>
+    <div class="mb-3">
+        <label for="{{ form.idcategory.vars.id }}">Category</label>
+        {{ form_widget(form.idcategory) }}
+        {{ form_errors(form.idcategory) }}
     </div>
 
-
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <button type="submit" class="btn btn-info">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 </div>
