@@ -12,7 +12,9 @@ class CategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('namecat')
+            ->add('namecat' ,new Assert\NotBlank([
+        'message' => 'Price cannot be blank.'
+    ]),)
         ;
     }
 
