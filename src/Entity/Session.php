@@ -36,7 +36,9 @@ class Session
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+
     #[ORM\ManyToOne(inversedBy: 'sessions')]
+    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id')]
     private ?Event $event = null;
 
     public function getId(): ?int
@@ -130,7 +132,7 @@ class Session
 
     public function getDate(): ?string
     {
-        return $this->date;
+        return $this->date ? $this->date->format('Y-m-d') : null;
     }
 
     public function setDate(string $date): static

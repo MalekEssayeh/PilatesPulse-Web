@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Event;
 use App\Entity\Session;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,10 +18,11 @@ class SessionType extends AbstractType
             ->add('description')
             ->add('duration')
             ->add('coach_id')
-            ->add('event_id')
+            ->add('event', EntityType::class, [
+                'class' => Event::class,
+                'choice_label' => 'name',
+            ])
             ->add('time')
-          //  ->add('date')
-           // ->add('event')
         ;
     }
 
