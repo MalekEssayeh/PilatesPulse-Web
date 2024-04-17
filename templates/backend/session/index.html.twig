@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'Admin.html.twig' %}
 
 {% block title %}Session index{% endblock %}
 
@@ -31,8 +31,8 @@
                 <td>{{ session.time ? session.time|date('H:i:s') : '' }}</td>
                 <td>{{ session.date ? session.date|date('Y-m-d') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_session_show', {'id': session.id}) }}">show</a>
-                    <a href="{{ path('app_session_edit', {'id': session.id}) }}">edit</a>
+                    <a href="{{ path('app_session_show_admin', {'id': session.id}) }}">show</a>
+                    <a href="{{ path('app_session_edit_admin', {'id': session.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -43,5 +43,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_session_new') }}">Create new</a>
+    <a href="{{ path('app_session_new_admin') }}">Create new</a>
 {% endblock %}
