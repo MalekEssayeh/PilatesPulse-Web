@@ -173,4 +173,15 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_event_index_admin', [], Response::HTTP_SEE_OTHER);
     }
 
+    public function showEvents(): Response
+    {
+        // Fetch events along with their associated sessions
+        $events = $this->getDoctrine()->getRepository(Event::class)->findAllWithSessions();
+
+        // Render the template and pass events data
+        return $this->render('event/index.html.twig', [
+            'events' => $events,
+        ]);
+    }
+
 }

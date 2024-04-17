@@ -45,4 +45,12 @@ class EventRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findAllWithSessions()
+    {
+        return $this->createQueryBuilder('e')
+            ->leftJoin('e.sessions', 's')
+            ->addSelect('s')
+            ->getQuery()
+            ->getResult();
+    }
 }

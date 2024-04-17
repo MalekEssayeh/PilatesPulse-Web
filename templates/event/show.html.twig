@@ -7,41 +7,56 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ event.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ event.name }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>NbrParticipants</th>
-                <td>{{ event.nbrParticipants }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ event.description }}</td>
-            </tr>
-            <tr>
-                <th>Coach_id</th>
-                <td>{{ event.coachId }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>
-                    {% if event.imageUrl %}
-                        <img src="{{ asset('uploads/' ~ event.imageUrl) }}" alt="Event Image" style="max-width: 200px; max-height: 200px;">
-                    {% else %}
-                        <p>No image available</p>
-                    {% endif %}
-                </td>
-            </tr>
-
+        <tr>
+            <th>Id</th>
+            <td>{{ event.id }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ event.name }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>NbrParticipants</th>
+            <td>{{ event.nbrParticipants }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ event.description }}</td>
+        </tr>
+        <tr>
+            <th>Coach_id</th>
+            <td>{{ event.coachId }}</td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td>
+                {% if event.imageUrl %}
+                    <img src="{{ asset('uploads/' ~ event.imageUrl) }}" alt="Event Image" style="max-width: 200px; max-height: 200px;">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Sessions</th>
+            <td>
+                <ul>
+                    {% for session in event.sessions %}
+                        <li>
+                            <p><a href="{{ path('app_session_show', {'id': session.id}) }}">Name: {{ session.name }}</a></p>
+                            <p>Description: {{ session.description }}</p>
+                            <p>Duration: {{ session.duration }}</p>
+                            <p>Time: {{ session.time ? session.time|date('H:i') : '' }}</p>
+                        </li>
+                        <hr>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
         </tbody>
     </table>
 
