@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande{% endblock %}
+
+{% block body %}
+    <h1>Commande</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ commande.id }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ commande.Total }}</td>
+            </tr>
+            <tr>
+                <th>CodePromo</th>
+                <td>{{ commande.codePromo }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_commande_index') }}">Back to List</a>
+
+    <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">Edit</a>
+
+    {{ include('commande/_delete_form.html.twig') }}
+
+    <a href="{{ path('app_livraison_new') }}" class="btn btn-primary">Create New Livraison</a> {# Assuming 'app_livraison_new' is the route for creating a new Livraison #}
+{% endblock %}
