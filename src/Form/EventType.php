@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Event;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,8 +18,12 @@ class EventType extends AbstractType
             ->add('nbrParticipants')
             ->add('description')
             ->add('coach_id')
-            ->add('image_url')
-        ;
+            ->add('imageUrl', FileType::class, [
+                'label' => 'Image (JPEG or PNG file)',
+                'required' => false,
+                'mapped' => true,
+                'attr' => ['accept' => 'image/jpeg, image/png'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -7,6 +7,7 @@ use App\Form\EventType;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -99,6 +100,18 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle file upload
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $form->get('imageUrl')->getData();
+            if ($uploadedFile) {
+                $fileName = md5(uniqid()) . '.' . $uploadedFile->guessExtension();
+                $uploadedFile->move(
+                    $this->getParameter('upload_directory'),
+                    $fileName
+                );
+                $event->setImageUrl($fileName);
+            }
+
             $entityManager->persist($event);
             $entityManager->flush();
 
@@ -126,6 +139,18 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle file upload
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $form->get('imageUrl')->getData();
+            if ($uploadedFile) {
+                $fileName = md5(uniqid()) . '.' . $uploadedFile->guessExtension();
+                $uploadedFile->move(
+                    $this->getParameter('upload_directory'), //upload directory configured in services.yaml file (config)
+                    $fileName
+                );
+                $event->setImageUrl($fileName);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_event_index_admin', [], Response::HTTP_SEE_OTHER);
