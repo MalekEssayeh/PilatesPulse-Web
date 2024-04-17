@@ -35,20 +35,7 @@
                 <th>Time</th>
                 <td>{{ session.time ? session.time|date('H:i:s') : '' }}</td>
             </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ session.date ? session.date|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>
-                    {% if session.event.imageUrl %}
-                        <img src="{{ asset('uploads/' ~ session.event.imageUrl) }}" alt="Event Image">
-                    {% else %}
-                        <p>No image available</p>
-                    {% endif %}
-                </td>
-            </tr>
+
         </tbody>
     </table>
 

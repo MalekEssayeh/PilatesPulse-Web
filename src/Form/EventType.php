@@ -4,9 +4,12 @@ namespace App\Form;
 
 use App\Entity\Event;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+//use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\LessThan;
@@ -14,9 +17,18 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Form\FormTypeInterface;
+use App\Form\StringToFileTransformer;
 
 class EventType extends AbstractType
 {
+    private StringToFileTransformer $stringToFileTransformer;
+
+    public function __construct(StringToFileTransformer $stringToFileTransformer)
+    {
+        $this->stringToFileTransformer = $stringToFileTransformer;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -29,7 +41,7 @@ class EventType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('date', null, [
+            ->add('date', DateType::class, [
                 'constraints' => [
                     new NotNull(['message' => 'Name cannot be blank.']),
                     new GreaterThan([
@@ -72,6 +84,8 @@ class EventType extends AbstractType
                     ]),
                 ],
             ]);
+
+       $builder->get('imageUrl')->addModelTransformer($this->stringToFileTransformer);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -79,5 +93,23 @@ class EventType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Event::class,
         ]);
+    }
+
+    public function transform($value)
+    {
+        if ($value instanceof File) {
+            return $value->getPathname();
+        }
+
+        return null;
+    }
+
+    public function reverseTransform($value): File
+    {
+        if ($value instanceof File) {
+            return $value;
+        }
+
+        return new File($value);
     }
 }

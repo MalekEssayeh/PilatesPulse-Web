@@ -3,9 +3,17 @@
 {% block title %}New Session{% endblock %}
 
 {% block body %}
-    <div style="margin-top:100px" class="page-title">  <h1>Create new Session</h1></div>
-
-    {{ include('backend/session/_form.html.twig') }}
-
-    <a href="{{ path('app_session_index_admin') }}">back to list</a>
+    <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <div class="card" style="width: 400px;">
+            <div class="card-header bg-primary text-white">
+                <h1 class="text-center">Create New Session</h1>
+            </div>
+            <div class="card-body">
+                {{ include('backend/session/_form.html.twig') }}
+            </div>
+            <div class="card-footer bg-light">
+                <a href="{{ path('app_session_index_admin') }}" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

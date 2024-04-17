@@ -118,7 +118,7 @@ class SessionController extends AbstractController
         ]);
     }
 
-    #[Route('/Admin/{id}/edit', name: 'app_session_edit_admin', methods: ['GET', 'POST'])]
+    #[Route('/admin/{id}/edit', name: 'app_session_edit_admin', methods: ['GET', 'POST'])]
     public function editAdmin(Request $request, Session $session, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(SessionType::class, $session);

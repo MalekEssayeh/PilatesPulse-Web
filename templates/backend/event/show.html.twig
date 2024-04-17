@@ -32,9 +32,17 @@
                 <td>{{ event.coachId }}</td>
             </tr>
             <tr>
-                <th>Image_url</th>
-                <td>{{ event.imageUrl }}</td>
+                <th>Image</th>
+                <td>
+                    {% if event.imageUrl %}
+                        <img src="{{ asset('uploads/' ~ event.imageUrl) }}" alt="Event Image" style="max-width: 200px; max-height: 200px;">
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                </td>
             </tr>
+
+
         </tbody>
     </table>
 
