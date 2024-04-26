@@ -1,112 +1,153 @@
-{#
-
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Shoppingcart index{% endblock %}
 
-{% block body %}
-    <h1>Shoppingcart index</h1>
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .container {
+            margin-top: 50px;
+            text-align: center;
+        }
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Idshoppingcart</th>
-                <th>Iduser</th>
-                <th>Nameproduct</th>
-                <th>Image</th>
-                <th>Productdescription</th>
-                <th>Priceproduct</th>
-                <th>Quantity</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for shoppingcart in shoppingcarts %}
-            <tr>
-                <td>{{ shoppingcart.idshoppingcart }}</td>
-                <td>{{ shoppingcart.iduser }}</td>
-                <td>{{ shoppingcart.nameproduct }}</td>
-                <td>{{ shoppingcart.image }}</td>
-                <td>{{ shoppingcart.productdescription }}</td>
-                <td>{{ shoppingcart.priceproduct }}</td>
-                <td>{{ shoppingcart.quantity }}</td>
-                <td>
-                    <a href="{{ path('app_shoppingcart_show', {'idshoppingcart': shoppingcart.idshoppingcart}) }}">show</a>
-                    <a href="{{ path('app_shoppingcart_edit', {'idshoppingcart': shoppingcart.idshoppingcart}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        .cart-container {
+            background-color: #f8f1f5; /* Light pink pastel */
+            border-radius: 8px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-    <a href="{{ path('app_shoppingcart_new') }}">Create new</a>
+        .product-row {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .product-image {
+            width: 100px;
+            margin-right: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 20px;
+            color: #6a0572; /* Purple pastel */
+            margin-bottom: 5px;
+        }
+
+        .product-description {
+            color: #b83b5e; /* Pink pastel */
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-weight: bold;
+            font-size: 18px;
+            color: #880061; /* Dark pink pastel */
+            margin-bottom: 10px;
+        }
+
+        .quantity-input {
+            width: 50px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .delete-button {
+            background-color: #b83b5e; /* Pink pastel */
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .delete-button:hover {
+            background-color: #6a0572; /* Purple pastel */
+        }
+
+        .checkout-button {
+            background-color: #6a0572; /* Purple pastel */
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .checkout-button:hover {
+            background-color: #880061; /* Dark pink pastel */
+        }
+    </style>
 {% endblock %}
 
-
-
-#}
-
-{% extends 'base.html.twig' %}
-
-{% block title %}Shoppingcart index{% endblock %}
-
 {% block body %}
-    <br>
-    <h1>Shoppingcart index</h1>
-    <br>
-    {% if app.session.flashBag.has('success') %}
-        <div class="alert alert-success alert-dismissible fade show">
-            {% for message in app.flashes('success') %}
-                {{ message|trans }}
-            {% endfor %}
+    <div class="container">
+        <h1>Your Shopping Cart</h1>
 
+        <div class="cart-container">
+            {% if app.session.flashBag.has('success') %}
+                <div class="alert alert-success" role="alert">
+                    {% for message in app.flashes('success') %}
+                        {{ message|trans }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if shoppingcarts is empty %}
+                <p>Your shopping cart is empty.</p>
+            {% else %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Nameproduct</th>
+                        <th>Productdescription</th>
+                        <th>Priceproduct</th>
+                        <th>Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for shoppingcart in shoppingcarts %}
+                        <tr class="product-row">
+                            <td><img src="{{ asset('uploads/' ~ shoppingcart.image) }}" alt="Product Image" class="product-image"></td>
+                            <td><span class="product-name">{{ shoppingcart.nameproduct }}</span></td>
+                            <td><span class="product-description">{{ shoppingcart.productdescription }}</span></td>
+                            <td><span class="product-price">$ {{ shoppingcart.priceproduct }}</span></td>
+                            <td><input type="number" class="quantity-input" value="{{ shoppingcart.quantity }}" disabled></td>
+                            <td><button class="delete-button" data-id="{{ shoppingcart.idshoppingcart }}">Remove</button></td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">No records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <button class="checkout-button">Proceed to Checkout</button>
+            {% endif %}
         </div>
-        <script>
-            //5 sec bech thidde
-            document.addEventListener("DOMContentLoaded", function() {
-                const alert = document.querySelector('.alert');
-                alert.classList.add('show');
-                setTimeout(function() {
-                    alert.classList.remove('show');
-                }, 5000);
-            });
-        </script>
-    {% endif %}
-    <table class="table">
-    <thead>
-    <tr>
-        <th>Image</th>
-        <th>Nameproduct</th>
-        <th>Productdescription</th>
-        <th>Priceproduct</th>
-        <th>Quantity</th>
-        <th>actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for shoppingcart in shoppingcarts %}
-        <tr>
-            <td><img src="{{ asset('uploads/' ~ shoppingcart.image) }}" class="card__image" width="250" height="200"></td>
-            <td>{{ shoppingcart.nameproduct }}</td>
-            <td>{{ shoppingcart.productdescription }}</td>
-            <td>{{ shoppingcart.priceproduct }}</td>
-            <td>{{ shoppingcart.quantity }}</td>
-            <td>
-                {{ include('shoppingcart/_delete_form.html.twig') }}
-            </td>
-        </tr>
-    {% else %}
-        <tr>
-            <td colspan="8">no records found</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    </table>
-
-
+    </div>
 {% endblock %}

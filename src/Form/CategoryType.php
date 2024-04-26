@@ -6,15 +6,22 @@ use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints;
+
 
 class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('namecat' ,new Assert\NotBlank([
-        'message' => 'Price cannot be blank.'
-    ]),)
+            ->add('namecat' , null, [
+                'constraints' => [
+                    new Assert\NotNull([
+                        'message' => ' Name cannot be null.'
+                    ]),
+                ]
+            ])
         ;
     }
 

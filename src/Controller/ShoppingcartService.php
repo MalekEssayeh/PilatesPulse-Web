@@ -57,10 +57,11 @@ class ShoppingcartService
         return $cartData;
     }
 
-    public function findCartItemByUserAndProduct(int $userId, int $productId): ?Shoppingcart
+    public function findByUserAndProduct(int $userId, int $productId): ?Shoppingcart
     {
-        return $this->em->getRepository(Shoppingcart::class)
-            ->findOneBy([1 => $userId, 'idProduct' => $productId]);
+        return $this->em
+            ->getRepository(Shoppingcart::class)
+            ->findOneBy(['iduser' => $userId, 'idproduct' => $productId]);
     }
 
 

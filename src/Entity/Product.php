@@ -42,18 +42,16 @@ class Product
     #[ORM\OneToMany(mappedBy: 'idproduct', targetEntity: Wishlist::class)]
     private Collection $wishlists;
 
+
+
+    #[ORM\OneToMany(mappedBy: 'idproduct', targetEntity: Shoppingcart::class)]
+    private Collection $shoppingcarts;
+
     public function __construct()
     {
+        $this->shoppingcarts = new ArrayCollection();
         $this->wishlists = new ArrayCollection();
     }
-
-    /*#[ORM\ManyToMany(targetEntity: Shoppingcart::class, mappedBy: 'idproduct')]
-    private Collection $shoppingcarts;*/
-
-    /*public function __construct()
-    {
-        $this->shoppingcarts = new ArrayCollection();
-    }*/
 
 
         public function getIdproduct(): ?int

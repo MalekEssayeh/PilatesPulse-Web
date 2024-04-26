@@ -92,24 +92,37 @@ class ShoppingcartController extends AbstractController
         $user = 1;
         $quantity = $request->query->get('quantity');
 
+        // Find the product in the database
         $product = $productRepository->find($idproduct);
 
+        // Check if the product exists
         if (!$product) {
             throw $this->createNotFoundException('Product not found');
         }
-        $shoppingcart = new Shoppingcart();
-        $shoppingcart->setIduser($user);
-        $shoppingcart->setIdProduct($product->getIdproduct());
-        $shoppingcart->setNameproduct($product->getNameproduct());
-        $shoppingcart->setImage($product->getImage());
-        $shoppingcart->setProductdescription($product->getProductdescription());
-        $shoppingcart->setQuantity(1);
-        $shoppingcart->setPriceproduct($product->getPriceproduct());
 
+        // Check if the product is already in the shopping cart
+        $shoppingcart = $shoppingcartService->findByUserAndProduct($user, $product->getIdproduct());
+
+        if ($shoppingcart) {
+            // If the product is already in the cart, increase its quantity by 1
+            $shoppingcart->setQuantity($shoppingcart->getQuantity() + 1);
+        } else {
+            // If the product is not in the cart, create a new shopping cart item
+            $shoppingcart = new Shoppingcart();
+            $shoppingcart->setIduser($user);
+            $shoppingcart->setIdProduct($product->getIdproduct());
+            $shoppingcart->setNameproduct($product->getNameproduct());
+            $shoppingcart->setImage($product->getImage());
+            $shoppingcart->setProductdescription($product->getProductdescription());
+            $shoppingcart->setQuantity(1);
+            $shoppingcart->setPriceproduct($product->getPriceproduct());
+        }
+
+        // Persist the shopping cart item
         $entityManager->persist($shoppingcart);
         $entityManager->flush();
 
-        $this->addFlash('success', 'product added successfully!');
+        $this->addFlash('success', 'Product added successfully!');
 
         return $this->redirectToRoute('app_shoppingcart_index');
     }
