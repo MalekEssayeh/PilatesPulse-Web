@@ -36,18 +36,16 @@ class Shoppingcart
     #[ORM\Column]
     private ?int $quantity = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="shoppingcarts", cascade={"persist"})
-     * @ORM\JoinTable(
-     *     name="shoppingcart_product",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="shoppingcart_id", referencedColumnName="idshoppingcart")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="product_id", referencedColumnName="idproduct")
-     *     }
-     * )
-     */
+    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: "shoppingcarts", cascade: ["persist"])]
+    #[ORM\JoinTable(
+        name: "shoppingcart_product",
+        joinColumns: [
+            new ORM\JoinColumn(name: "shoppingcart_id", referencedColumnName: "idshoppingcart")
+        ],
+        inverseJoinColumns: [
+            new ORM\JoinColumn(name: "product_id", referencedColumnName: "idproduct")
+        ]
+    )]
     private Collection $products; // Update property name to be more descriptive
 
     public function __construct()

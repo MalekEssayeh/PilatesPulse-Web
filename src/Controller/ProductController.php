@@ -105,18 +105,11 @@ class ProductController extends AbstractController
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getIdproduct(), $request->request->get('_token'))) {
-            // Check if the product is associated with any shopping cart entries
-            $shoppingCartEntries = $product->getShoppingcarts();
-            foreach ($shoppingCartEntries as $entry) {
-                // Remove the associated shopping cart entries
-                $entityManager->remove($entry);
-            }
-
-            // Now remove the product itself
             $entityManager->remove($product);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }
