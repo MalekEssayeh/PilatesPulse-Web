@@ -58,7 +58,7 @@ class ExerciceType extends AbstractType
                         'message' => 'An image must be chosen.'
                     ]),
                     new Assert\File([
-                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif'], // Adjust the mime types as needed
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif'], 
                         'mimeTypesMessage' => 'Please upload a valid image file (JPEG, PNG, GIF).',
                     ]),
                 ],
@@ -72,7 +72,7 @@ class ExerciceType extends AbstractType
                         'message' => 'a video must be chosen.'
                     ]),
                     new Assert\File([
-                        'mimeTypes' => ['video/mp4', 'video/mpeg', 'video/quicktime'], // Adjust the mime types as needed
+                        'mimeTypes' => ['video/mp4', 'video/mpeg', 'video/quicktime'], 
                         'mimeTypesMessage' => 'Please upload a valid video file (MP4, MPEG, QuickTime).',
                     ]),
                 ],
