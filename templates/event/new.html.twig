@@ -1,11 +1,41 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title %}New Event{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Page title */
+        .page-title {
+            margin-top: 100px;
+        }
+
+        /* Heading */
+        .page-title h1 {
+            font-size: 2em; /* Adjust font size as needed */
+            color: #333; /* Text color */
+        }
+
+        /* Back to list link */
+        .back-link {
+            display: block; /* Display as block for full width */
+            margin-top: 20px; /* Add margin for spacing */
+            text-decoration: none; /* Remove underline */
+            color: #007bff; /* Link color */
+        }
+
+        .back-link:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
     <div style="margin-top:100px" class="page-title"> <h1>Create new Event</h1></div>
 
     {{ include('event/_form.html.twig') }}
 
-    <a href="{{ path('app_event_index') }}">back to list</a>
+    <div style="text-align: center;"> <!-- Center the link -->
+        <a href="{{ path('app_event_index') }}" class="back-link">Back to list</a>
+    </div>
 {% endblock %}

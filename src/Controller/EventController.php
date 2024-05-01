@@ -48,6 +48,7 @@ class EventController extends AbstractController
     #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
     public function show(Event $event): Response
     {
+        $events = $this->getDoctrine()->getRepository(Event::class)->findAll();
         return $this->render('event/show.html.twig', [
             'event' => $event,
         ]);
@@ -183,5 +184,18 @@ class EventController extends AbstractController
             'events' => $events,
         ]);
     }
+
+    #[Route('/events', name: 'events_list', methods: ['GET'])]
+    public function getAllEvents(): Response
+    {
+        // Fetch events from the database
+        $events = $this->getDoctrine()->getRepository(Event::class)->findAll();
+
+        return $this->render('event/show.html.twig', [
+            'events' => $events,
+        ]);
+    }
+
+
 
 }

@@ -2,44 +2,85 @@
 
 {% block title %}Event index{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        /* Container for event rows */
+        .event-row {
+            display: flex; /* Use flexbox layout */
+            justify-content: space-between; /* Space evenly between event cards */
+            margin-bottom: 20px; /* Add margin between rows */
+        }
+
+        /* Card container */
+        .event-card {
+            border: 1px solid #ccc; /* Add a border */
+            border-radius: 5px; /* Add border radius for rounded corners */
+            padding: 20px; /* Add padding for spacing */
+            width: calc(33.33% - 20px); /* Set width for event cards */
+            box-sizing: border-box; /* Include padding and border in the width */
+        }
+
+        /* Event title */
+        .event-title {
+            font-size: 1.5em; /* Adjust font size as needed */
+            margin-bottom: 10px; /* Add space below the title */
+        }
+
+        /* Event details */
+        .event-details {
+            color: #555; /* Adjust text color */
+        }
+
+        /* Button style */
+        .btn {
+            display: inline-block; /* Display as inline-block */
+            padding: 8px 16px; /* Add padding */
+            background-color: #007bff; /* Button background color */
+            color: #fff; /* Button text color */
+            text-decoration: none; /* Remove underline */
+            border: none; /* Remove border */
+            border-radius: 4px; /* Add border radius */
+            cursor: pointer; /* Add cursor pointer */
+        }
+
+        .btn:hover {
+            background-color: #0056b3; /* Darker background color on hover */
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <div style="margin-top:100px" class="page-title"> <h1>Event index</h1></div>
+    <div style="margin-top: 100px;" class="page-title">
+        <h1>Event index</h1>
+    </div>
+<div class="whole-wrap">
+    <div class="container box_1170">
+        <div class="section-top-border">
+    {% for row in events|batch(3) %}
+            <div class="row">
+            {% for event in row %}
+                <div class="event-card" >
+                    <div class="col-md-4" >
+                        <div class="card" style="width: 18rem;">
+                            <img class="card-img-top" src="{{ asset('uploads/' ~ event.imageUrl) }}" alt="Card image cap">
+                            <div class="card-body">
+                                <div class="card-title">{{ event.name }}</div>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong> Date: </strong>{{ event.date ? event.date|date('Y-m-d') : '' }}</li>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Date</th>
-                <th>NbrParticipants</th>
-                <th>Description</th>
-                <th>Coach_id</th>
-                <th>Image_url</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for event in events %}
-            <tr>
-                <td>{{ event.id }}</td>
-                <td>{{ event.name }}</td>
-                <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
-                <td>{{ event.nbrParticipants }}</td>
-                <td>{{ event.description }}</td>
-                <td>{{ event.coachId }}</td>
-                <td>{{ event.imageUrl }}</td>
-                <td>
-                    <a href="{{ path('app_event_show', {'id': event.id}) }}">show</a>
-                    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+      <div style="margin-bottom: 100px;"></div>
+    {% endfor %}
+        </div>
+    </div>
+</div>
 
-    <a href="{{ path('app_event_new') }}">Create new</a>
+    <a href="{{ path('app_event_new') }}" class="btn">Create new</a>
 {% endblock %}

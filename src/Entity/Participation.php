@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ParticipationRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipationRepository::class)]
@@ -18,6 +19,9 @@ class Participation
 
     #[ORM\Column]
     private ?int $user_id = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $participationDate = null;
 
     public function getId(): ?int
     {
@@ -44,6 +48,18 @@ class Participation
     public function setUserId(int $user_id): static
     {
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getParticipationDate(): ?\DateTimeInterface
+    {
+        return $this->participationDate;
+    }
+
+    public function setParticipationDate(\DateTimeInterface $participationDate): static
+    {
+        $this->participationDate = $participationDate;
 
         return $this;
     }
