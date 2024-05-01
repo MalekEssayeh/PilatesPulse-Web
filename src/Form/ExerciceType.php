@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use ConsoleTVs\Profanity\Builder;
 
 class ExerciceType extends AbstractType
 {
@@ -25,9 +27,11 @@ class ExerciceType extends AbstractType
                 new Assert\Length([
                     'min' => 2,
                     'minMessage' => 'Exercise name must be more than 2 characters.'
-                ])
+                ]),
+                new Assert\Callback([$this, 'validateNomExercice']),
             ]
-        ])            ->add('DifficulteExercice', ChoiceType::class, [
+        ])       
+         ->add('DifficulteExercice', ChoiceType::class, [
                 'choices' => [
                     'Hard' => 'Difficile',
                     'Medium' => 'Moyenne',
@@ -79,7 +83,15 @@ class ExerciceType extends AbstractType
 
             ]);
     }
+    public function validateNomExercice($value, ExecutionContextInterface $context)
+    {
+        $clean = Builder::blocker($value)->clean();
 
+        if (!$clean) {
+            $context->buildViolation('Exercise Name contains profanity.')
+                ->addViolation();
+        }
+    }
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

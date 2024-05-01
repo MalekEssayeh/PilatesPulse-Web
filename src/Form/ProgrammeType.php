@@ -14,6 +14,9 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints as Assert;
+use ConsoleTVs\Profanity\Builder;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProgrammeType extends AbstractType
 {
@@ -23,9 +26,10 @@ class ProgrammeType extends AbstractType
             ->add('nomprogramme', null, [
                 'constraints' => [
                     new NotNull(['message' => 'Program name cannot be empty.']),
-                    new Length(['min' => 2, 'minMessage' => 'Program name must be at least {{ limit }} characters long.'])
-                ]
-            ])
+                    new Length(['min' => 2, 'minMessage' => 'Program name must be at least {{ limit }} characters long.']),
+                    new Assert\Callback([$this, 'validateNomExercice']),
+                    ]
+                ])   
             ->add('dureeprogramme', null, [
                 'constraints' => [
                     new NotBlank(['message' => 'Program duration cannot be empty.']),
@@ -57,5 +61,14 @@ class ProgrammeType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Programme::class,
         ]);
+    }
+    public function validateNomExercice($value, ExecutionContextInterface $context)
+    {
+        $clean = Builder::blocker($value)->clean();
+
+        if (!$clean) {
+            $context->buildViolation('Programme Name contains profanity.')
+                ->addViolation();
+        }
     }
 }

@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use ConsoleTVs\Profanity\Builder;
 
 
 #[Route('/exercice')]
@@ -46,8 +45,6 @@ class ExerciceController extends AbstractController
                 $this->getParameter('upload_directory'),
                 $fileName
             );
-            $name=Builder::blocker($form['nomExercice']->getData())->filter();
-            $exercice->setnomexercice($name);
             $exercice->setVideo($fileName);
             $exercice->setIdcoach(123);
             $entityManager->persist($exercice);
