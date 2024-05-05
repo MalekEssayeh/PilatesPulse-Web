@@ -49,6 +49,19 @@ class RatingRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+    public function calculateAverageRatingForProduct($productId): ?float
+    {
+        $queryBuilder = $this->createQueryBuilder('r');
+
+        $averageRating = $queryBuilder
+            ->select('AVG(r.nbstars) as averageRating')
+            ->where('r.idproduct = :productId')
+            ->setParameter('productId', $productId)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $averageRating ? (float) $averageRating : null;
+    }
 
 
 }

@@ -7,6 +7,7 @@ use App\Form\ProductType;
 use App\Repository\ShoppingcartRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +24,22 @@ class ProductController extends AbstractController
         ]);
     }
 
+
     #[Route('/shop', name: 'app_product_shop', methods: ['GET'])]
-    public function fetch(ProductRepository $productRepository): Response
+    public function fetch(ProductRepository $productRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        // Get all products from the repository
+        $productsQuery = $productRepository->findAll();
+
+        // Paginate the results
+        $products = $paginator->paginate(
+            $productsQuery, // Query to paginate
+            $request->query->getInt('page', 1), // Current page number
+            1 // Number of items per page
+        );
+
         return $this->render('product/shop.html.twig', [
-            'products' => $productRepository->findAll(),
+            'products' => $products,
         ]);
     }
 

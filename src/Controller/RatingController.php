@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Entity\Rating;
+use App\Repository\ProductRepository;
+use App\Repository\RatingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,17 +71,17 @@ class RatingController extends AbstractController
     }
 
     #[Route('/Stat', name: 'app_debt_stat')]
-    public function stat(DebtRepository $debtRepository): Response
+    public function stat(RatingRepository $ratingRepository, ProductRepository $productRepository): Response
     {
-        // Get data for the chart
-        $debtData = $debtRepository->getDebtDataForChart();
+        // Fetch all products
+        $products = $productRepository->findAll();
 
-        // Format the data for Chart.js
+        // Initialize an array to hold chart data
         $chartData = [
             'labels' => [],
             'datasets' => [
                 [
-                    'label' => 'Amount',
+                    'label' => 'Average Rating',
                     'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
                     'borderColor' => 'rgba(255, 99, 132, 1)',
                     'borderWidth' => 1,
@@ -88,15 +90,19 @@ class RatingController extends AbstractController
             ],
         ];
 
-        foreach ($debtData as $row) {
-            $chartData['labels'][] = $row['type'];
-            $chartData['datasets'][0]['data'][] = $row['totalAmount'];
+        // Populate chart data with average ratings for each product
+        foreach ($products as $product) {
+            $productId = $product->getIdproduct();
+            $averageRating = $ratingRepository->calculateAverageRatingForProduct($productId);
+            $chartData['labels'][] = $product->getNameproduct(); // Assuming Product entity has a name property
+            $chartData['datasets'][0]['data'][] = $averageRating ?? 0; // If no rating found, set to 0
         }
 
         // Render the template with the chart data
         return $this->render('debt/stat.html.twig', [
-            'debtChartData' => json_encode($chartData),
+            'chartData' => $chartData, // Pass chartData to the template
         ]);
     }
+
 
 }
