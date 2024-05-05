@@ -1,0 +1,53 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+{% block body %}
+    <h1>Product</h1>
+
+    <div class="grid text-center d-flex flex-row gap-1" style="margin-left: 50px; margin-top: 50px; margin-bottom: 50px">
+        <div class="g-col-6">
+            <img src="{{ asset('uploads/' ~ product.image) }}" class="card__image" width="300" height="250">
+        </div>
+
+        <div class="g-col-4 " style="margin-left: 20px; margin-top: 50px">
+            <p style="font-size: 3.5em; margin-left: 70px; color: #d191b2;">
+                <strong>
+                {{ product.nameproduct }}</p></strong>
+            <p style="font-size: 2em;"><br>
+                <strong>
+                {{ product.productdescription }}</p></strong>
+            <p style="font-size: 1.5em;"><br>
+                <strong>Price :</strong>
+                {{ product.priceproduct }} DT</p>
+            <p style="font-size: 1.5em;">
+                <strong>Rest in stock : </strong>
+                {{ product.stock }}</p>
+        </div>
+    </div>
+<div style="margin-top: 300px">
+    <table>
+    <tr>
+        <td><a style="margin-left:10px; margin-right: 10px " href="{{ path('app_product_index') }}">back to list</a></td>
+
+         <td ><a style="margin-left:10px; margin-right: 20px " href="{{ path('app_product_edit', {'idproduct': product.idproduct}) }}">edit</a></td>
+        <td style="margin-left:10px; margin-right: 10px ">{{ include('product/_delete_form.html.twig') }}</td>
+    </tr>
+    </table>
+</div>
+
+{% endblock %}
+
+
+{#
+<div class="card" style="width: 18rem;">
+    <img src="{{ asset('uploads/' ~ product.image ) }}" class="card-img-top" alt="Product image">
+    <div class="card-body">
+        <h5 class="card-title">{{ product.nameproduct }}</h5>
+        <p class="card-text">{{product.productdescription}}</p>
+        <p class="card-price">Price : {{product.priceproduct}}</p>
+        <p class="card-stock">left in stock : {{product.stock}}</p>
+        <a href="#" class="btn btn-primary">add to cart</a>
+    </div>
+</div>
+ #}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product index{% endblock %}
+
+
+{% block body %}
+    <style>
+        .icon:hover {
+            filter: invert(23%) sepia(98%) saturate(7338%) hue-rotate(350deg) brightness(93%) contrast(92%);
+        }
+    </style>
+
+
+    <h1>Shop</h1>
+
+    <div class="container">
+
+        <div class="row">
+            {% for product in products %}
+                <div class="cardd">
+                    <div class="card__header">
+                        <img src="{{ asset('uploads/' ~ product.image) }}" class="card__image" width="600">
+                    </div>
+                    <table>
+                        <tr>
+                            <th><h4>{{ product.nameproduct }}</h4></th>
+                            <th style="text-align: right;"><h5>{{ product.priceproduct }} TND</h5></th>
+                        </tr>
+                        <tr><th colspan="2" style="text-align: center;">{{ product.productdescription }}</th></tr>
+                        <tr>items left : {{ product.stock }}</tr>
+                    </table>
+                    <div class="card__footer" style="display: flex; justify-content: space-between; align-items: center;">
+                        <a href="{{ path('fetch_product', {'idproduct': product.idproduct}) }}" class="genric-btn danger-border circle">Show</a>
+                        <a href="{{ path('add_to_wishlist',{'idproduct': product.idproduct})}}">
+                        <img src="{{ asset('icons/heart.png') }}" alt="Icon" class="icon" style="width: 30px; height: 30px;"></a>
+                    </div>
+                </div>
+
+
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

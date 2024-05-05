@@ -1,0 +1,262 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+
+
+{% block body %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .card-pulse {
+        transition: transform 0.5s, background-color 0.5s, border-color 0.5s, box-shadow 0.5s;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+
+    .card-pulse:hover {
+        animation: pulse 2s;
+        background-color: #f8f9fa; /* Change background color on hover */
+        border-color: #6c757d; /* Change border color on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Change box shadow on hover */
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-size: 24px;
+        color: #d191b2;
+        font-weight: bold;
+        font-family: 'Arial', sans-serif;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif !important;
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+
+    .card-text strong {
+        color: #d191b2;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 18px;
+        border-radius: 20px;
+        margin-right: 10px;
+    }
+
+    .btn:hover {
+        background-color: #d191b2;
+        color: #fff;
+    }
+
+    .star {
+        display: inline-block;
+        width: 1em;
+
+    }
+    .hover {
+        color: rgb(255, 196, 0);
+    }
+
+    </style>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="text-center">Product</h1>
+                <div class="card card-pulse">
+                    <div class="card-body">
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-md-6 text-center">
+                                <div class="image-frame p-4 mb-4">
+                                    <img src="{{ asset('uploads/' ~ product.image) }}" class="card-img-top img-fluid" alt="Product Image">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mt-4">
+                                    <h2 class="card-title">{{ product.nameproduct }}</h2>
+                                    <p class="card-text">{{ product.productdescription }}</p>
+                                    <p class="card-text"><strong>Price :</strong> {{ product.priceproduct }} DT</p>
+                                    <p class="card-text"><strong>Rest in stock : </strong> {{ product.stock }}</p>
+                                    <i class="card-text">Note:</i>
+                                    <div class="rating" data-artwork-id="{{ product.idproduct }}">
+                                        <i class="star" data-note="1">&#9733;</i>
+                                        <i class="star" data-note="2">&#9733;</i>
+                                        <i class="star" data-note="3">&#9733;</i>
+                                        <i class="star" data-note="4">&#9733;</i>
+                                        <i class="star" data-note="5">&#9733;</i>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product form -->
+                <form action="{{ path('add_to_cart', {'idproduct': product.idproduct}) }}" method="post" id="addToCartForm">
+                    <input type="hidden" name="quantity" value="1"> <!-- Hidden input to hold quantity -->
+
+                    <div id="quantityPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border: 1px solid #ccc;">
+                        <p>Please enter the quantity you would like to purchase:</p>
+                        <input type="number" id="quantityInput" name="quantity" value="1" min="1" required>
+                        <button class="genric-btn primary-border circle" id="confirmQuantityButton">Confirm</button>
+                        <button class="genric-btn danger-border circle" id="cancelQuantityButton">Cancel</button>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="button" class="genric-btn warning-border circle" id="addToCartButton">Add to cart</button>
+                        <a href="{{ path('app_product_shop') }}" class="genric-btn success-border circle">Continue shopping</a>
+                        <a href="{{ path('app_shoppingcart_index') }}" class="genric-btn info-border circle">View cart</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add the following link and script tags to the head section -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+
+    <script>
+        //add to cart
+document.addEventListener('DOMContentLoaded', function() {
+    var addToCartForm = document.getElementById('addToCartForm');
+    var quantityPopup = document.getElementById('quantityPopup');
+    var cancelQuantityButton = document.getElementById('cancelQuantityButton');
+    var confirmQuantityButton = document.getElementById('confirmQuantityButton');
+    var quantityInput = document.getElementById('quantityInput');
+    var productStock = {{ product.stock }};
+
+    addToCartForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+    });
+
+    var addToCartButton = document.getElementById('addToCartButton');
+    addToCartButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Check if the product is already in the cart
+        var alreadyInCart = false; // Assume product is not in cart
+        // Add your logic here to check if the product is in the cart
+        // For demonstration purposes, I'm setting alreadyInCart to true if the product is already in the cart
+        if (alreadyInCart) {
+            // Product already in cart, ask user if they want to add more
+            Swal.fire({
+                title: 'Product Already in Cart',
+                text: 'Do you want to add more of this product to your cart?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Add More',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    quantityPopup.style.display = 'block';
+                }
+            });
+        } else {
+            // Product not in cart, proceed as usual
+            quantityPopup.style.display = 'block';
+        }
+    });
+
+    cancelQuantityButton.addEventListener('click', function() {
+        quantityPopup.style.display = 'none';
+    });
+
+    confirmQuantityButton.addEventListener('click', function() {
+        var quantity = parseInt(quantityInput.value);
+        if (isNaN(quantity) || quantity <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Quantity',
+                text: 'Please enter a valid quantity.',
+            });
+            return;
+        }
+        if (quantity > productStock) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Not Enough Stock',
+                text: 'We do not have enough stock for this quantity.',
+            });
+            return;
+        }
+        // If everything is fine, you can proceed with adding to cart
+        addToCartForm.querySelector('input[name="quantity"]').value = quantity;
+        addToCartForm.submit();
+        quantityPopup.style.display = 'none';
+    });
+});
+</script>
+
+
+
+    <script>
+        //Ratings
+
+
+        $(document).ready(function() {
+            $('.rating .star').on('click', function() {
+                var artworkId = $(this).closest('.rating').data('artwork-id');
+                var rating = $(this).index() + 1; // Index starts from 0, so add 1 to get the actual rating
+                submitRating(artworkId, rating);
+            });
+
+            function submitRating(artworkId, rating) {
+                $.ajax({
+                    url: '/vote',
+                    type: 'POST',
+                    data: { artworkId: artworkId, rating: rating },
+                    success: function(response) {
+                        console.log('Rating submitted successfully!');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error submitting rating: ' + error);
+                    }
+                });
+            }
+
+           /* function updateStars(artworkId, rating) {
+                $('.rating[data-artwork-id="' + artworkId + '"] .star').removeClass('hover');
+                $('.rating[data-artwork-id="' + artworkId + '"] .star').slice(0, rating).addClass('hover');
+            }*/
+
+            $('.star').on('mouseover', function() {
+                $(this).addClass('hover');
+                $(this).prevAll().addClass('hover');
+            });
+
+            $('.star').on('mouseleave', function() {
+                $('.star').removeClass('hover');
+            });
+        });
+
+    </script>
+
+
+{% endblock %}
