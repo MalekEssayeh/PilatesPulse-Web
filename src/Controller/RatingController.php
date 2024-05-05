@@ -36,8 +36,7 @@ class RatingController extends AbstractController
         }
 
         // Récupérer l'utilisateur connecté (ou gérer la connexion utilisateur si nécessaire)
-        //$user = $this->getUser();
-        $user =1;
+        $user = $this->getUser();
 
 
        /* if (!$user) {
@@ -55,7 +54,7 @@ class RatingController extends AbstractController
             // Créer un nouveau vote
             $newVote = new Rating();
             $newVote->setIduser($user);
-            $newVote->addIdproduct($artwork);
+            $newVote->setIdproduct($artwork);
             $newVote->setNbstars($rating);
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -68,4 +67,36 @@ class RatingController extends AbstractController
         // Répondre avec un JSON pour indiquer que le vote a été enregistré avec succès
         return $this->json(['success' => true]);
     }
+
+    #[Route('/Stat', name: 'app_debt_stat')]
+    public function stat(DebtRepository $debtRepository): Response
+    {
+        // Get data for the chart
+        $debtData = $debtRepository->getDebtDataForChart();
+
+        // Format the data for Chart.js
+        $chartData = [
+            'labels' => [],
+            'datasets' => [
+                [
+                    'label' => 'Amount',
+                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
+                    'borderColor' => 'rgba(255, 99, 132, 1)',
+                    'borderWidth' => 1,
+                    'data' => [],
+                ],
+            ],
+        ];
+
+        foreach ($debtData as $row) {
+            $chartData['labels'][] = $row['type'];
+            $chartData['datasets'][0]['data'][] = $row['totalAmount'];
+        }
+
+        // Render the template with the chart data
+        return $this->render('debt/stat.html.twig', [
+            'debtChartData' => json_encode($chartData),
+        ]);
+    }
+
 }

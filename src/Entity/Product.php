@@ -43,21 +43,15 @@ class Product
 
 
 
-
-
-    #[ORM\OneToMany(mappedBy: 'idproduct', targetEntity: Wishlist::class)]
-    private Collection $wishlists;
-
-    #[ORM\ManyToMany(targetEntity: Rating::class, mappedBy: 'idproduct')]
+    #[ORM\OneToMany(mappedBy: 'idproduct', targetEntity: Rating::class)]
     private Collection $ratings;
+
 
 
 
     public function __construct()
     {
         $this->iduser = new ArrayCollection();
-        $this->wishlists = new ArrayCollection();
-        $this->vote = new ArrayCollection();
         $this->ratings = new ArrayCollection();
     }
 
@@ -70,7 +64,7 @@ class Product
     }*/
 
 
-        public function getIdproduct(): ?int
+    public function getIdproduct(): ?int
     {
         return $this->idproduct;
     }
@@ -198,35 +192,6 @@ class Product
 
 
 
-    /**
-     * @return Collection<int, Wishlist>
-     */
-    public function getWishlists(): Collection
-    {
-        return $this->wishlists;
-    }
-
-    public function addWishlist(Wishlist $wishlist): static
-    {
-        if (!$this->wishlists->contains($wishlist)) {
-            $this->wishlists->add($wishlist);
-            $wishlist->setIdproduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWishlist(Wishlist $wishlist): static
-    {
-        if ($this->wishlists->removeElement($wishlist)) {
-            // set the owning side to null (unless already changed)
-            if ($wishlist->getIdproduct() === $this) {
-                $wishlist->setIdproduct(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Rating>
@@ -240,7 +205,7 @@ class Product
     {
         if (!$this->ratings->contains($rating)) {
             $this->ratings->add($rating);
-            $rating->addIdproduct($this);
+            $rating->setIdproduct($this);
         }
 
         return $this;
@@ -249,11 +214,20 @@ class Product
     public function removeRating(Rating $rating): static
     {
         if ($this->ratings->removeElement($rating)) {
-            $rating->removeIdproduct($this);
+            // set the owning side to null (unless already changed)
+            if ($rating->getIdproduct() === $this) {
+                $rating->setIdproduct(null);
+            }
         }
 
         return $this;
     }
+
+
+
+
+
+
 
 
 }
